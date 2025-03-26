@@ -18,18 +18,17 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["price_label"]}</div>
-                    <div class="info-value" style="color: #3b82f6">${float(market_info['last']):,.2f}</div>
+                    <div class="info-value price-value">${float(market_info['last']):,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
         with col2:
-            change_color = "#22c55e" if float(market_info['changeRate']) > 0 else "#ef4444"
+            change_value = float(market_info['changeRate'])*100
+            change_class = "change-value-up" if change_value > 0 else "change-value-down"
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["change_label"]}</div>
-                    <div class="info-value" style="color: {change_color}">
-                        {float(market_info['changeRate'])*100:+.2f}%
-                    </div>
+                    <div class="info-value {change_class}">{change_value:+.2f}%</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -37,7 +36,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["volume_label"]}</div>
-                    <div class="info-value" style="color: #f59e0b">${float(market_info['volValue']):,.0f}</div>
+                    <div class="info-value volume-value">${float(market_info['volValue']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -45,7 +44,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["market_cap_label"]}</div>
-                    <div class="info-value" style="color: #8b5cf6">${float(market_info['vol']):,.0f}</div>
+                    <div class="info-value market-cap-value">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
     

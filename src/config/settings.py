@@ -22,23 +22,40 @@ def get_styles():
             /* Info cards */
             .info-card {
                 background-color: #1e293b;
+                border: 1px solid #334155;
                 border-radius: 0.5rem;
-                padding: 0.75rem;
+                padding: 1rem;
                 margin: 0.25rem;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                min-height: 80px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
             
             .info-label {
                 color: #94a3b8;
-                font-size: 0.875rem;
-                margin-bottom: 0.25rem;
+                font-size: 0.9rem;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
             }
             
             .info-value {
-                color: #f8fafc;
-                font-size: 1.25rem;
-                font-weight: 600;
+                font-size: 1.5rem;
+                font-weight: 700;
+                letter-spacing: 0.025em;
+                line-height: 1.2;
             }
+            
+            /* Price value colors */
+            .price-value { color: #3b82f6 !important; }
+            .change-value-up { color: #22c55e !important; }
+            .change-value-down { color: #ef4444 !important; }
+            .volume-value { color: #f59e0b !important; }
+            .market-cap-value { color: #8b5cf6 !important; }
             
             /* Titles */
             .stMarkdown h1 {
