@@ -251,10 +251,13 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         st.markdown("""
             <div class="right-sidebar">
                 <h3>Support & Resistance</h3>
+                <ul class="level-list">
+        """, unsafe_allow_html=True)
+        st.markdown("""
+                </ul>
                 <h4>Resistance Levels</h4>
                 <ul class="level-list">
         """, unsafe_allow_html=True)
-        
         # Display resistance levels above current price
         for price, _, strength in resistance_levels:
             if price > current_price and strength != 11:
