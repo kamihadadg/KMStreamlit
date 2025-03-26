@@ -33,6 +33,7 @@ def get_styles():
                 flex-direction: column;
                 justify-content: center;
                 transition: transform 0.2s;
+                top:10px
             }
             
             .info-card:hover {
