@@ -144,8 +144,11 @@ with st.sidebar:
 # Fetch and display data
 df = fetch_candles(selected_coin_label, selected_timeframe)
 if not df.empty:
+    # Convert MA periods to list of integers
+    ma_periods_list = [int(period) for period in ma_periods.values()]
+    
     plot_candlestick(
-        df, indicators, ma_periods, macd_params, rsi_period,
+        df, indicators, ma_periods_list, macd_params, rsi_period,
         ichimoku_params, texts, st.session_state.language,
         st.session_state.theme, st.session_state.show_grid,
         st.session_state.show_crosshair, selected_coin_label,
