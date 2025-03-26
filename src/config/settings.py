@@ -24,27 +24,32 @@ def get_styles():
                 background-color: #1e293b;
                 border: 1px solid #334155;
                 border-radius: 0.5rem;
-                padding: 1rem;
+                padding: 0.75rem;
                 margin: 0.25rem;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 text-align: center;
-                min-height: 80px;
+                min-height: 65px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
+                transition: transform 0.2s;
+            }
+            
+            .info-card:hover {
+                transform: translateY(-2px);
             }
             
             .info-label {
                 color: #94a3b8;
-                font-size: 0.9rem;
+                font-size: 0.8rem;
                 font-weight: 500;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.25rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
             }
             
             .info-value {
-                font-size: 1.5rem;
+                font-size: 1.25rem;
                 font-weight: 700;
                 letter-spacing: 0.025em;
                 line-height: 1.2;
@@ -56,6 +61,56 @@ def get_styles():
             .change-value-down { color: #ef4444 !important; }
             .volume-value { color: #f59e0b !important; }
             .market-cap-value { color: #8b5cf6 !important; }
+            
+            /* Right sidebar styles */
+            .right-sidebar {
+                background-color: #1e293b;
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-top: 1rem;
+            }
+            
+            .right-sidebar h3 {
+                color: #f8fafc;
+                font-size: 1.1rem;
+                margin-bottom: 0.75rem;
+                border-bottom: 1px solid #334155;
+                padding-bottom: 0.5rem;
+            }
+            
+            .right-sidebar h4 {
+                color: #e2e8f0;
+                font-size: 1rem;
+                margin: 0.5rem 0;
+            }
+            
+            .right-sidebar ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .right-sidebar li {
+                color: #94a3b8;
+                font-size: 0.9rem;
+                padding: 0.25rem 0;
+                margin: 0;
+            }
+            
+            .support-level {
+                color: #22c55e;
+                font-weight: 500;
+            }
+            
+            .resistance-level {
+                color: #ef4444;
+                font-weight: 500;
+            }
+            
+            .level-strength {
+                color: #94a3b8;
+                font-size: 0.8rem;
+            }
             
             /* Titles */
             .stMarkdown h1 {

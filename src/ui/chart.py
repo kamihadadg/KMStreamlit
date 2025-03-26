@@ -255,13 +255,35 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     
     # Display support and resistance levels in right sidebar
     with right_sidebar:
-        st.markdown("---")
-        st.markdown(f"### {texts['support_levels']} & {texts['resistance_levels']}")
+        st.markdown("""
+            <div class="right-sidebar">
+                <h3>Support & Resistance Levels</h3>
+                <h4>Support Levels</h4>
+                <ul>
+        """, unsafe_allow_html=True)
         
-        st.markdown(f"#### {texts['support_levels']}")
         for price, _, strength in support_levels:
-            st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})")
+            st.markdown(f"""
+                <li>
+                    <span class="support-level">${price:,.2f}</span>
+                    <span class="level-strength">(Strength: {strength})</span>
+                </li>
+            """, unsafe_allow_html=True)
         
-        st.markdown(f"#### {texts['resistance_levels']}")
+        st.markdown("""
+                <h4>Resistance Levels</h4>
+                <ul>
+        """, unsafe_allow_html=True)
+        
         for price, _, strength in resistance_levels:
-            st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})") 
+            st.markdown(f"""
+                <li>
+                    <span class="resistance-level">${price:,.2f}</span>
+                    <span class="level-strength">(Strength: {strength})</span>
+                </li>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("""
+                </ul>
+            </div>
+        """, unsafe_allow_html=True) 
