@@ -155,17 +155,21 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         # Add Support and Resistance Levels
         support_levels, resistance_levels = find_support_resistance(df)
         
+        # Sort levels by price (support ascending, resistance descending)
+        support_levels = sorted(support_levels, key=lambda x: x[0])  # Sort by price ascending
+        resistance_levels = sorted(resistance_levels, key=lambda x: x[0], reverse=True)  # Sort by price descending
+        
         # Add support and resistance lines to chart
         for price, _, strength in support_levels:
             fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
                          line_width=1,
-                         annotation_text=f"{texts['support_levels']}: ${price:,.2f}", 
+                         annotation_text=f"S: ${price:,.2f}", 
                          annotation_position="right")
         
         for price, _, strength in resistance_levels:
             fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
                          line_width=1,
-                         annotation_text=f"{texts['resistance_levels']}: ${price:,.2f}", 
+                         annotation_text=f"R: ${price:,.2f}", 
                          annotation_position="right")
         
         # Update layout
@@ -239,29 +243,30 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     with right_sidebar:
         st.markdown("""
             <div class="right-sidebar">
-                <h3>Support & Resistance Levels</h3>
-                <h4>Support Levels</h4>
-                <ul>
-        """, unsafe_allow_html=True)
-        
-        for price, _, strength in support_levels:
-            st.markdown(f"""
-                <li>
-                    <span class="support-level">${price:,.2f}</span>
-                    <span class="level-strength">(Strength: {strength})</span>
-                </li>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("""
+                <h3>Support & Resistance</h3>
                 <h4>Resistance Levels</h4>
-                <ul>
+                <ul class="level-list">
         """, unsafe_allow_html=True)
         
         for price, _, strength in resistance_levels:
             st.markdown(f"""
                 <li>
                     <span class="resistance-level">${price:,.2f}</span>
-                    <span class="level-strength">(Strength: {strength})</span>
+                    <span class="level-strength">({strength})</span>
+                </li>
+            """, unsafe_allow_html=True)
+        
+        st.markdown("""
+                </ul>
+                <h4>Support Levels</h4>
+                <ul class="level-list">
+        """, unsafe_allow_html=True)
+        
+        for price, _, strength in support_levels:
+            st.markdown(f"""
+                <li>
+                    <span class="support-level">${price:,.2f}</span>
+                    <span class="level-strength">({strength})</span>
                 </li>
             """, unsafe_allow_html=True)
         
