@@ -10,82 +10,96 @@ def setup_page_config():
     )
 
 def get_styles():
-    """Get custom styles"""
+    """Get CSS styles for the application"""
     return """
         <style>
-        .main {
-            background-color: #0f172a;
-            color: #e2e8f0;
-        }
-        .sidebar .sidebar-content {
-            background-color: #1e293b;
-            color: #e2e8f0;
-        }
-        .stButton>button {
-            background-color: #3b82f6;
-            color: white;
-            border-radius: 5px;
-            padding: 0.5rem 1rem;
-            border: none;
-            transition: all 0.3s ease;
-        }
-        .stButton>button:hover {
-            background-color: #2563eb;
-            transform: translateY(-1px);
-        }
-        .stSelectbox, .stMultiselect, .stSlider {
-            color: #e2e8f0;
-        }
-        .reportview-container .main .block-container {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            max-height: 100vh;
-        }
-        .css-1d391kg {
-            padding-top: 0.5rem;
-        }
-        .stMarkdown {
-            color: #e2e8f0;
-        }
-        .price-card {
-            background-color: #1e293b;
-            border-radius: 10px;
-            padding: 0.75rem;
-            margin: 0.25rem 0;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .metric-card {
-            background-color: #1e293b;
-            border-radius: 10px;
-            padding: 0.75rem;
-            margin: 0.25rem 0;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        .metric-value {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #3b82f6;
-        }
-        .metric-label {
-            font-size: 0.875rem;
-            color: #94a3b8;
-        }
-        h1 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        h2 {
-            font-size: 1.25rem;
-            margin-bottom: 0.5rem;
-        }
-        h3 {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
-        .stSubheader {
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-        }
+            /* Main block container */
+            .block-container {
+                padding-top: 0.5rem;
+                padding-bottom: 0.5rem;
+            }
+            
+            /* Info cards */
+            .info-card {
+                background-color: #1e293b;
+                border-radius: 0.5rem;
+                padding: 0.75rem;
+                margin: 0.25rem;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            
+            .info-label {
+                color: #94a3b8;
+                font-size: 0.875rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .info-value {
+                color: #f8fafc;
+                font-size: 1.25rem;
+                font-weight: 600;
+            }
+            
+            /* Titles */
+            .stMarkdown h1 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            .stMarkdown h2 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            .stMarkdown h3 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Sidebar */
+            .css-1d391kg {
+                background-color: #0f172a;
+            }
+            
+            /* Main content */
+            .main .block-container {
+                background-color: #0f172a;
+            }
+            
+            /* Buttons */
+            .stButton button {
+                background-color: #3b82f6;
+                color: white;
+                border: none;
+                border-radius: 0.375rem;
+                padding: 0.5rem 1rem;
+                font-weight: 500;
+                transition: background-color 0.2s;
+            }
+            
+            .stButton button:hover {
+                background-color: #2563eb;
+            }
+            
+            /* Checkboxes and radio buttons */
+            .stCheckbox label, .stRadio label {
+                color: #f8fafc;
+            }
+            
+            /* Select boxes */
+            .stSelectbox select {
+                background-color: #1e293b;
+                color: #f8fafc;
+                border: 1px solid #334155;
+                border-radius: 0.375rem;
+            }
+            
+            /* Number inputs */
+            .stNumberInput input {
+                background-color: #1e293b;
+                color: #f8fafc;
+                border: 1px solid #334155;
+                border-radius: 0.375rem;
+            }
         </style>
     """ 
