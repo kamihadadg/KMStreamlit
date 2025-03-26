@@ -31,7 +31,7 @@ with st.sidebar:
     
     # Language selection
     st.subheader(texts["language"])
-    language = st.radio("", ["English", "Persian"], key="language_radio")
+    language = st.radio("", ["English", "Persian", "German"], key="language_radio")
     if language != st.session_state.language:
         st.session_state.language = language
         texts = get_texts(language)
@@ -138,8 +138,8 @@ with st.sidebar:
         ichimoku_params = {"tenkan": 9, "kijun": 26, "senkou": 52}
 
 # Main content
-st.title(texts["title"])
-st.markdown(texts["subtitle"])
+# st.title(texts["title"])
+# st.markdown(texts["subtitle"])
 
 # Fetch and display data
 df = fetch_candles(selected_coin_label, selected_timeframe)

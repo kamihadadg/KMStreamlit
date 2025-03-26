@@ -18,14 +18,14 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
             st.markdown(f"""
                 <div class="price-card">
                     <div class="metric-label">{texts['current_price']}</div>
-                    <div class="metric-value">${current_price:,.2f}</div>
+                    <div class="metric-value" style="color: #94a3b8">${current_price:,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
         with col2:
             if market_info:
                 price_change = float(market_info.get('changeRate', 0)) * 100
-                color = "green" if price_change >= 0 else "red"
+                color = "#22c55e" if price_change >= 0 else "#ef4444"
                 st.markdown(f"""
                     <div class="price-card">
                         <div class="metric-label">{texts['price_change']}</div>
@@ -39,7 +39,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
                 st.markdown(f"""
                     <div class="price-card">
                         <div class="metric-label">{texts['volume']}</div>
-                        <div class="metric-value">${volume_24h:,.0f}</div>
+                        <div class="metric-value" style="color: #94a3b8">${volume_24h:,.0f}</div>
                     </div>
                 """, unsafe_allow_html=True)
         
@@ -49,7 +49,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
                 st.markdown(f"""
                     <div class="price-card">
                         <div class="metric-label">{texts['market_cap']}</div>
-                        <div class="metric-value">${market_cap:,.0f}</div>
+                        <div class="metric-value" style="color: #94a3b8">${market_cap:,.0f}</div>
                     </div>
                 """, unsafe_allow_html=True)
 
