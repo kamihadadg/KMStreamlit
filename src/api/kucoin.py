@@ -5,7 +5,7 @@ import streamlit as st
 
 @st.cache_data(ttl=60)
 def fetch_candles(symbol, timeframe):
-    """Fetch candle data from KuCoin API"""
+    """Fetch candlestick data from KuCoin API"""
     url = "https://api.kucoin.com/api/v1/market/candles"
     params = {
         'type': timeframe,
@@ -28,10 +28,10 @@ def fetch_candles(symbol, timeframe):
             return df[['timestamp', 'open', 'high', 'low', 'close', 'volume']]
         else:
             st.error(f"API Error: {data['msg']}")
-            return None
+            return pd.DataFrame()
     except requests.RequestException as e:
         st.error(f"Data Fetch Error: {e}")
-        return None
+        return pd.DataFrame()
 
 @st.cache_data(ttl=60)
 def fetch_market_info(symbol):
