@@ -18,7 +18,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["current_price"]}</div>
-                    <div class="info-value">{float(market_info['last']):,.2f}</div>
+                    <div class="info-value">${float(market_info['last']):,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -37,7 +37,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["volume"]}</div>
-                    <div class="info-value">${float(market_info['vol24h']):,.0f}</div>
+                    <div class="info-value">${float(market_info['volValue']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -45,7 +45,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["market_cap"]}</div>
-                    <div class="info-value">${float(market_info['volValue24h']):,.0f}</div>
+                    <div class="info-value">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
     
