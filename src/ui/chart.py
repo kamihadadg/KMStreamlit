@@ -18,7 +18,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["current_price"]}</div>
-                    <div class="info-value">${float(market_info['last']):,.2f}</div>
+                    <div class="info-value" style="color: #3b82f6">${float(market_info['last']):,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -37,7 +37,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["volume"]}</div>
-                    <div class="info-value">${float(market_info['volValue']):,.0f}</div>
+                    <div class="info-value" style="color: #f59e0b">${float(market_info['volValue']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -45,7 +45,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["market_cap"]}</div>
-                    <div class="info-value">${float(market_info['vol']):,.0f}</div>
+                    <div class="info-value" style="color: #8b5cf6">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
     
@@ -71,19 +71,23 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         high=df['high'],
         low=df['low'],
         close=df['close'],
+        increasing_line_color='#22c55e',
+        decreasing_line_color='#ef4444',
+        increasing_fillcolor='#22c55e',
+        decreasing_fillcolor='#ef4444',
         name='OHLC'
     ))
     
     # Add Moving Averages
     if "MA" in indicators:
-        colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
+        colors = ['#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#10b981']
         for i, period in enumerate(ma_periods):
             ma = calculate_ma(df, period)
             fig.add_trace(go.Scatter(
                 x=df['timestamp'],
                 y=ma,
                 name=f'MA{period}',
-                line=dict(color=colors[i % len(colors)], width=1)
+                line=dict(color=colors[i % len(colors)], width=2)
             ))
     
     # Add MACD
@@ -93,19 +97,22 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             x=df['timestamp'],
             y=macd,
             name='MACD',
-            line=dict(color='#3b82f6', width=1)
+            line=dict(color='#3b82f6', width=2),
+            yaxis='y2'
         ))
         fig.add_trace(go.Scatter(
             x=df['timestamp'],
             y=signal,
             name='Signal',
-            line=dict(color='#f59e0b', width=1)
+            line=dict(color='#f59e0b', width=2),
+            yaxis='y2'
         ))
         fig.add_trace(go.Bar(
             x=df['timestamp'],
             y=hist,
             name='Histogram',
-            marker_color='#10b981' if hist[-1] > 0 else '#ef4444'
+            marker_color='#22c55e' if hist[-1] > 0 else '#ef4444',
+            yaxis='y2'
         ))
     
     # Add Ichimoku Cloud
@@ -117,25 +124,25 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             x=df['timestamp'],
             y=tenkan,
             name='Tenkan',
-            line=dict(color='#3b82f6', width=1)
+            line=dict(color='#3b82f6', width=2)
         ))
         fig.add_trace(go.Scatter(
             x=df['timestamp'],
             y=kijun,
             name='Kijun',
-            line=dict(color='#f59e0b', width=1)
+            line=dict(color='#f59e0b', width=2)
         ))
         fig.add_trace(go.Scatter(
             x=df['timestamp'],
             y=senkou_span_a,
             name='Senkou Span A',
-            line=dict(color='#10b981', width=1)
+            line=dict(color='#22c55e', width=2)
         ))
         fig.add_trace(go.Scatter(
             x=df['timestamp'],
             y=senkou_span_b,
             name='Senkou Span B',
-            line=dict(color='#ef4444', width=1)
+            line=dict(color='#ef4444', width=2)
         ))
     
     # Add RSI
@@ -145,7 +152,8 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             x=df['timestamp'],
             y=rsi,
             name='RSI',
-            line=dict(color='#8b5cf6', width=1)
+            line=dict(color='#8b5cf6', width=2),
+            yaxis='y3'
         ))
     
     # Update layout
@@ -176,13 +184,28 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     )
     
     # Add secondary y-axis for MACD and RSI
-    if "MACD" in indicators or "RSI" in indicators:
+    if "MACD" in indicators:
         fig.update_layout(
             yaxis2=dict(
+                title="MACD",
                 overlaying="y",
                 side="right",
+                position=0.95,
                 gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
                 showgrid=show_grid
+            )
+        )
+    
+    if "RSI" in indicators:
+        fig.update_layout(
+            yaxis3=dict(
+                title="RSI",
+                overlaying="y",
+                side="right",
+                position=0.85,
+                gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
+                showgrid=show_grid,
+                range=[0, 100]
             )
         )
     
