@@ -161,7 +161,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         title=f"{symbol} - {timeframe}",
         yaxis_title="Price",
         xaxis_title="Time",
-        template="plotly_dark" if theme == "Dark" else "plotly_white",
+        template="plotly_dark" if theme == texts["dark"] else "plotly_white",
         showlegend=True,
         legend=dict(
             yanchor="top",
@@ -180,7 +180,10 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         ),
         hovermode='x unified' if show_crosshair else False,
         height=600,
-        margin=dict(l=0, r=0, t=40, b=0)
+        margin=dict(l=0, r=0, t=40, b=0),
+        paper_bgcolor="#0f172a" if theme == texts["dark"] else "#ffffff",
+        plot_bgcolor="#0f172a" if theme == texts["dark"] else "#ffffff",
+        font=dict(color="#e2e8f0" if theme == texts["dark"] else "#1e293b")
     )
     
     # Add secondary y-axis for MACD and RSI
