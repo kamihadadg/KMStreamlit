@@ -4,6 +4,7 @@ from src.config.settings import setup_page_config, get_styles
 from src.config.texts import get_texts
 from src.api.kucoin import fetch_candles
 from src.ui.chart import plot_candlestick
+import time
 
 # Page configuration
 setup_page_config()
@@ -20,9 +21,17 @@ if 'show_crosshair' not in st.session_state:
     st.session_state.show_crosshair = True
 if 'timezone' not in st.session_state:
     st.session_state.timezone = "UTC"
+if 'last_refresh' not in st.session_state:
+    st.session_state.last_refresh = time.time()
 
 # Get texts based on language
 texts = get_texts(st.session_state.language)
+
+# Auto-refresh logic
+current_time = time.time()
+if current_time - st.session_state.last_refresh >= 60:  # 60 seconds = 1 minute
+    st.session_state.last_refresh = current_time
+    st.rerun()
 
 # Sidebar
 with st.sidebar:

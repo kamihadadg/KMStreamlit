@@ -5,6 +5,7 @@ from src.indicators.technical import (
     calculate_rsi, calculate_volume_profile, find_support_resistance
 )
 from src.api.kucoin import fetch_market_info
+import time
 
 def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                     ichimoku_params, texts, language, theme, show_grid,
@@ -53,25 +54,6 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     chart_col, right_sidebar = st.columns([3, 1])
     
     with chart_col:
-        # Auto-update every minute
-        st.markdown("""
-            <script>
-                function reloadPage() {
-                    window.location.reload();
-                }
-                setTimeout(reloadPage, 60000);
-            </script>
-        """, unsafe_allow_html=True)
-        
-        # Update button in top right
-        st.markdown("""
-            <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
-                <button class="stButton" onclick="window.location.reload();">
-                    🔄
-                </button>
-            </div>
-        """, unsafe_allow_html=True)
-        
         # Create candlestick chart
         fig = go.Figure()
         
