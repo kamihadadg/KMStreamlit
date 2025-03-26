@@ -45,7 +45,10 @@ texts = {
         "volume_label": "Volume",
         "market_cap_label": "Market Cap",
         "pan_left": "← Pan Left",
-        "pan_right": "Pan Right →"
+        "pan_right": "Pan Right →",
+        "refresh_settings": "Refresh Settings",
+        "auto_refresh": "Auto Refresh (1 min)",
+        "manual_refresh": "Manual Refresh"
     },
     "Persian": {
         "title": "نمودار ارز دیجیتال",
@@ -93,7 +96,10 @@ texts = {
         "volume_label": "حجم",
         "market_cap_label": "ارزش بازار",
         "pan_left": "← حرکت به چپ",
-        "pan_right": "حرکت به راست →"
+        "pan_right": "حرکت به راست →",
+        "refresh_settings": "تنظیمات به‌روزرسانی",
+        "auto_refresh": "به‌روزرسانی خودکار (۱ دقیقه)",
+        "manual_refresh": "به‌روزرسانی دستی"
     },
     "German": {
         "title": "Krypto-Chart",
@@ -141,7 +147,10 @@ texts = {
         "volume_label": "Volumen",
         "market_cap_label": "Marktkapitalisierung",
         "pan_left": "← Nach Links",
-        "pan_right": "Nach Rechts →"
+        "pan_right": "Nach Rechts →",
+        "refresh_settings": "Aktualisierungseinstellungen",
+        "auto_refresh": "Automatische Aktualisierung (1 Min)",
+        "manual_refresh": "Manuelle Aktualisierung"
     }
 }
 

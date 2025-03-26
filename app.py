@@ -23,15 +23,18 @@ if 'timezone' not in st.session_state:
     st.session_state.timezone = "UTC"
 if 'last_refresh' not in st.session_state:
     st.session_state.last_refresh = time.time()
+if 'auto_refresh' not in st.session_state:
+    st.session_state.auto_refresh = True
 
 # Get texts based on language
 texts = get_texts(st.session_state.language)
 
 # Auto-refresh logic
-current_time = time.time()
-if current_time - st.session_state.last_refresh >= 60:  # 60 seconds = 1 minute
-    st.session_state.last_refresh = current_time
-    st.rerun()
+if st.session_state.auto_refresh:
+    current_time = time.time()
+    if current_time - st.session_state.last_refresh >= 60:  # 60 seconds = 1 minute
+        st.session_state.last_refresh = current_time
+        st.rerun()
 
 # Sidebar
 with st.sidebar:
@@ -52,6 +55,17 @@ with st.sidebar:
         theme = st.selectbox("", [texts["dark"], texts["light"]], key="theme_select", label_visibility="collapsed")
         if theme != st.session_state.theme:
             st.session_state.theme = theme
+    
+    # Refresh settings
+    st.caption(texts["refresh_settings"])
+    col1, col2 = st.columns([2, 1])
+    with col1:
+        auto_refresh = st.checkbox(texts["auto_refresh"], value=st.session_state.auto_refresh)
+        if auto_refresh != st.session_state.auto_refresh:
+            st.session_state.auto_refresh = auto_refresh
+    with col2:
+        if st.button("🔄", help=texts["manual_refresh"]):
+            st.rerun()
     
     # Cryptocurrency selection
     st.caption(texts["select_coin"])
