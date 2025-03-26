@@ -248,22 +248,17 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                 <ul class="level-list">
         """, unsafe_allow_html=True)
         
-<<<<<<< HEAD
         # Display resistance levels sorted by price (high to low)
         resistance_levels = sorted(resistance_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
         for price, _, strength in resistance_levels[:5]:  # Show top 5 levels
-=======
-        for price, _, strength in resistance_levels:
->>>>>>> parent of 0ab5e0f (22)
             st.markdown(f"""
                 <li>
                     <span class="resistance-level">${price:,.2f}</span>
-                    <span class="level-strength">({strength})</span>
+                    <span class="level-strength">{strength}</span>
                 </li>
             """, unsafe_allow_html=True)
         
         st.markdown("""
-<<<<<<< HEAD
                     </ul>
                     <h4>Support Levels</h4>
                     <ul class="level-list">
@@ -285,22 +280,3 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                     </ul>
                 </div>
             """, unsafe_allow_html=True) 
-=======
-                </ul>
-                <h4>Support Levels</h4>
-                <ul class="level-list">
-        """, unsafe_allow_html=True)
-        
-        for price, _, strength in support_levels:
-            st.markdown(f"""
-                <li>
-                    <span class="support-level">${price:,.2f}</span>
-                    <span class="level-strength">({strength})</span>
-                </li>
-            """, unsafe_allow_html=True)
-        
-        st.markdown("""
-                </ul>
-            </div>
-        """, unsafe_allow_html=True) 
->>>>>>> parent of 0ab5e0f (22)
