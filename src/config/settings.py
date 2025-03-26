@@ -6,17 +6,35 @@ def setup_page_config():
         layout="wide",
         page_title="Crypto Chart Pro",
         page_icon="📈",
-        initial_sidebar_state="expanded"
+        initial_sidebar_state="expanded",
+        menu_items={
+            'Get Help': None,
+            'Report a bug': None,
+            'About': None
+        }
     )
 
 def get_styles():
     """Get CSS styles for the application"""
     return """
         <style>
+            /* Hide Streamlit elements */
+            #MainMenu {visibility: hidden;}
+            header {visibility: hidden;}
+            footer {visibility: hidden;}
+            
             /* Main block container */
             .block-container {
-                padding-top: 0.5rem;
-                padding-bottom: 0.5rem;
+                padding-top: 0rem !important;
+                padding-bottom: 0rem !important;
+            }
+            
+            /* Info cards container */
+            .info-cards-container {
+                padding: 0.5rem;
+                margin-top: 0;
+                display: flex;
+                gap: 0.5rem;
             }
             
             /* Info cards */
@@ -25,7 +43,7 @@ def get_styles():
                 border: 1px solid #334155;
                 border-radius: 0.5rem;
                 padding: 0.75rem;
-                margin: 0.25rem;
+                margin: 0;
                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
                 text-align: center;
                 min-height: 65px;
@@ -33,7 +51,7 @@ def get_styles():
                 flex-direction: column;
                 justify-content: center;
                 transition: transform 0.2s;
-                top:10px
+                flex: 1;
             }
             
             .info-card:hover {
@@ -67,22 +85,22 @@ def get_styles():
             .right-sidebar {
                 background-color: #1e293b;
                 border-radius: 0.5rem;
-                padding: 1rem;
-                margin-top: 1rem;
+                padding: 0.75rem;
+                margin: 0;
             }
             
             .right-sidebar h3 {
                 color: #f8fafc;
-                font-size: 1.1rem;
-                margin-bottom: 0.75rem;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
                 border-bottom: 1px solid #334155;
-                padding-bottom: 0.5rem;
+                padding-bottom: 0.25rem;
             }
             
             .right-sidebar h4 {
                 color: #e2e8f0;
-                font-size: 1rem;
-                margin: 0.5rem 0;
+                font-size: 0.9rem;
+                margin: 0.25rem 0;
             }
             
             .right-sidebar ul {
@@ -93,9 +111,12 @@ def get_styles():
             
             .right-sidebar li {
                 color: #94a3b8;
-                font-size: 0.9rem;
-                padding: 0.25rem 0;
+                font-size: 0.85rem;
+                padding: 0.15rem 0;
                 margin: 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
             
             .support-level {
@@ -110,7 +131,8 @@ def get_styles():
             
             .level-strength {
                 color: #94a3b8;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+                margin-left: 0.5rem;
             }
             
             /* Titles */

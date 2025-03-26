@@ -13,40 +13,47 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     # Display market info
     market_info = fetch_market_info(symbol)
     if market_info:
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.markdown(f"""
-                <div class="info-card">
-                    <div class="info-label">{texts["price_label"]}</div>
-                    <div class="info-value price-value">${float(market_info['last']):,.2f}</div>
-                </div>
-            """, unsafe_allow_html=True)
+        st.markdown("""
+            <div class="info-cards-container">
+        """, unsafe_allow_html=True)
         
-        with col2:
-            change_value = float(market_info['changeRate'])*100
-            change_class = "change-value-up" if change_value > 0 else "change-value-down"
-            st.markdown(f"""
-                <div class="info-card">
-                    <div class="info-label">{texts["change_label"]}</div>
-                    <div class="info-value {change_class}">{change_value:+.2f}%</div>
-                </div>
-            """, unsafe_allow_html=True)
+        # Price card
+        st.markdown(f"""
+            <div class="info-card">
+                <div class="info-label">{texts["price_label"]}</div>
+                <div class="info-value price-value">${float(market_info['last']):,.2f}</div>
+            </div>
+        """, unsafe_allow_html=True)
         
-        with col3:
-            st.markdown(f"""
-                <div class="info-card">
-                    <div class="info-label">{texts["volume_label"]}</div>
-                    <div class="info-value volume-value">${float(market_info['volValue']):,.0f}</div>
-                </div>
-            """, unsafe_allow_html=True)
+        # Change card
+        change_value = float(market_info['changeRate'])*100
+        change_class = "change-value-up" if change_value > 0 else "change-value-down"
+        st.markdown(f"""
+            <div class="info-card">
+                <div class="info-label">{texts["change_label"]}</div>
+                <div class="info-value {change_class}">{change_value:+.2f}%</div>
+            </div>
+        """, unsafe_allow_html=True)
         
-        with col4:
-            st.markdown(f"""
-                <div class="info-card">
-                    <div class="info-label">{texts["market_cap_label"]}</div>
-                    <div class="info-value market-cap-value">${float(market_info['vol']):,.0f}</div>
-                </div>
-            """, unsafe_allow_html=True)
+        # Volume card
+        st.markdown(f"""
+            <div class="info-card">
+                <div class="info-label">{texts["volume_label"]}</div>
+                <div class="info-value volume-value">${float(market_info['volValue']):,.0f}</div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Market cap card
+        st.markdown(f"""
+            <div class="info-card">
+                <div class="info-label">{texts["market_cap_label"]}</div>
+                <div class="info-value market-cap-value">${float(market_info['vol']):,.0f}</div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+            </div>
+        """, unsafe_allow_html=True)
     
     # Create two columns for chart and right sidebar
     chart_col, right_sidebar = st.columns([3, 1])
