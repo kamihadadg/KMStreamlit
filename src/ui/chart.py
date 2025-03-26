@@ -67,7 +67,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         st.markdown("""
             <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
                 <button class="stButton" onclick="window.location.reload();">
-                    🔄 {texts["update"]}
+                    🔄
                 </button>
             </div>
         """, unsafe_allow_html=True)
