@@ -10,8 +10,6 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
     """Plot candlestick chart with selected indicators"""
     if not df.empty and 'close' in df.columns and not df['close'].isna().all():
         current_price = df['close'].iloc[-1]
-        price_change = ((current_price - df['close'].iloc[-2]) / df['close'].iloc[-2]) * 100
-        volume_24h = df['volume'].sum()
         market_info = fetch_market_info(selected_coin_label)
         
         # Display info cards
@@ -25,21 +23,25 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
             """, unsafe_allow_html=True)
         
         with col2:
-            color = "green" if price_change >= 0 else "red"
-            st.markdown(f"""
-                <div class="price-card">
-                    <div class="metric-label">{texts['price_change']}</div>
-                    <div class="metric-value" style="color: {color}">{price_change:+.2f}%</div>
-                </div>
-            """, unsafe_allow_html=True)
+            if market_info:
+                price_change = float(market_info.get('changeRate', 0)) * 100
+                color = "green" if price_change >= 0 else "red"
+                st.markdown(f"""
+                    <div class="price-card">
+                        <div class="metric-label">{texts['price_change']}</div>
+                        <div class="metric-value" style="color: {color}">{price_change:+.2f}%</div>
+                    </div>
+                """, unsafe_allow_html=True)
         
         with col3:
-            st.markdown(f"""
-                <div class="price-card">
-                    <div class="metric-label">{texts['volume']}</div>
-                    <div class="metric-value">${volume_24h:,.0f}</div>
-                </div>
-            """, unsafe_allow_html=True)
+            if market_info:
+                volume_24h = float(market_info.get('vol24h', 0))
+                st.markdown(f"""
+                    <div class="price-card">
+                        <div class="metric-label">{texts['volume']}</div>
+                        <div class="metric-value">${volume_24h:,.0f}</div>
+                    </div>
+                """, unsafe_allow_html=True)
         
         with col4:
             if market_info:
