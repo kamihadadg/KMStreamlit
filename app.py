@@ -203,7 +203,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
         ),
         dragmode="pan",
         hovermode="x unified",
-        height=900,  # چارت بزرگ‌تر
+        height=700,  # چارت بزرگ‌تر
         margin=dict(l=40, r=40, t=30, b=20),  # حاشیه‌های کمتر
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
