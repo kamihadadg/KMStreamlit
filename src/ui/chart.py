@@ -155,22 +155,29 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         # Add Support and Resistance Levels
         support_levels, resistance_levels = find_support_resistance(df)
         
-        # Sort levels by price (support ascending, resistance descending)
-        support_levels = sorted(support_levels, key=lambda x: x[0])  # Sort by price ascending
-        resistance_levels = sorted(resistance_levels, key=lambda x: x[0], reverse=True)  # Sort by price descending
+        # Get current price
+        current_price = float(market_info['last'])
+        
+        # Sort levels by price (high to low)
+        resistance_levels = sorted(resistance_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
+        support_levels = sorted(support_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
         
         # Add support and resistance lines to chart
         for price, _, strength in support_levels:
-            fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
-                         line_width=1,
-                         annotation_text=f"S: ${price:,.2f}", 
-                         annotation_position="right")
+            # Only show support lines below current price
+            if price < current_price:
+                fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
+                             line_width=1,
+                             annotation_text=f"S: ${price:,.2f}", 
+                             annotation_position="right")
         
         for price, _, strength in resistance_levels:
-            fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
-                         line_width=1,
-                         annotation_text=f"R: ${price:,.2f}", 
-                         annotation_position="right")
+            # Only show resistance lines above current price
+            if price > current_price:
+                fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
+                             line_width=1,
+                             annotation_text=f"R: ${price:,.2f}", 
+                             annotation_position="right")
         
         # Update layout
         fig.update_layout(
@@ -248,27 +255,25 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                 <ul class="level-list">
         """, unsafe_allow_html=True)
         
-        # Display resistance levels sorted by price (high to low)
-        resistance_levels = sorted(resistance_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
-        for price, _, strength in resistance_levels[:5]:  # Show top 5 levels
-            st.markdown(f"""
-                <li>
-                    <span class="resistance-level">${price:,.2f}</span>
-                    <span class="level-strength">{strength}</span>
-                </li>
-            """, unsafe_allow_html=True)
+        # Display resistance levels above current price
+        for price, _, strength in resistance_levels:
+            if price > current_price and strength != 11:
+                st.markdown(f"""
+                    <li>
+                        <span class="resistance-level">${price:,.2f}</span>
+                        <span class="level-strength">{strength}</span>
+                    </li>
+                """, unsafe_allow_html=True)
         
         st.markdown("""
-                    </ul>
-                    <h4>Support Levels</h4>
-                    <ul class="level-list">
+                </ul>
+                <h4>Support Levels</h4>
+                <ul class="level-list">
         """, unsafe_allow_html=True)
         
-        # Display support levels sorted by price (high to low)
-        support_levels = sorted(support_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
-        for price, _, strength in support_levels[:5]:  # Show top 5 levels
-            # Skip the problematic level with strength 11
-            if strength != 11:
+        # Display support levels below current price
+        for price, _, strength in support_levels:
+            if price < current_price and strength != 11:
                 st.markdown(f"""
                     <li>
                         <span class="support-level">${price:,.2f}</span>
@@ -277,6 +282,6 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                 """, unsafe_allow_html=True)
         
         st.markdown("""
-                    </ul>
-                </div>
-            """, unsafe_allow_html=True) 
+                </ul>
+            </div>
+        """, unsafe_allow_html=True) 
