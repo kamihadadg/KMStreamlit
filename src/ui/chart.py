@@ -244,13 +244,12 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         st.markdown("""
             <div class="right-sidebar">
                 <h3>Support & Resistance</h3>
-                <div class="level-section">
-                    <h4>Resistance Levels</h4>
-                    <ul class="level-list">
+                <h4>Resistance Levels</h4>
+                <ul class="level-list">
         """, unsafe_allow_html=True)
         
-        # Display resistance levels sorted by price (low to high)
-        resistance_levels = sorted(resistance_levels, key=lambda x: (x[0], -x[2]))  # Sort by price asc, then strength desc
+        # Display resistance levels sorted by price (high to low)
+        resistance_levels = sorted(resistance_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
         for price, _, strength in resistance_levels[:5]:  # Show top 5 levels
             st.markdown(f"""
                 <li>
@@ -261,14 +260,12 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         
         st.markdown("""
                     </ul>
-                </div>
-                <div class="level-section">
                     <h4>Support Levels</h4>
                     <ul class="level-list">
         """, unsafe_allow_html=True)
         
-        # Display support levels sorted by price (low to high)
-        support_levels = sorted(support_levels, key=lambda x: (x[0], -x[2]))  # Sort by price asc, then strength desc
+        # Display support levels sorted by price (high to low)
+        support_levels = sorted(support_levels, key=lambda x: (-x[0], -x[2]))  # Sort by price desc, then strength desc
         for price, _, strength in support_levels[:5]:  # Show top 5 levels
             # Skip the problematic level with strength 11
             if strength != 11:
@@ -282,5 +279,4 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         st.markdown("""
                     </ul>
                 </div>
-            </div>
-        """, unsafe_allow_html=True) 
+            """, unsafe_allow_html=True) 
