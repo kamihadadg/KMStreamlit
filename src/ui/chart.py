@@ -17,7 +17,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         with col1:
             st.markdown(f"""
                 <div class="info-card">
-                    <div class="info-label">{texts["current_price"]}</div>
+                    <div class="info-label">{texts["price_label"]}</div>
                     <div class="info-value" style="color: #3b82f6">${float(market_info['last']):,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
@@ -26,7 +26,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             change_color = "#22c55e" if float(market_info['changeRate']) > 0 else "#ef4444"
             st.markdown(f"""
                 <div class="info-card">
-                    <div class="info-label">{texts["price_change"]}</div>
+                    <div class="info-label">{texts["change_label"]}</div>
                     <div class="info-value" style="color: {change_color}">
                         {float(market_info['changeRate'])*100:+.2f}%
                     </div>
@@ -36,7 +36,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         with col3:
             st.markdown(f"""
                 <div class="info-card">
-                    <div class="info-label">{texts["volume"]}</div>
+                    <div class="info-label">{texts["volume_label"]}</div>
                     <div class="info-value" style="color: #f59e0b">${float(market_info['volValue']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
@@ -44,7 +44,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         with col4:
             st.markdown(f"""
                 <div class="info-card">
-                    <div class="info-label">{texts["market_cap"]}</div>
+                    <div class="info-label">{texts["market_cap_label"]}</div>
                     <div class="info-value" style="color: #8b5cf6">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
@@ -63,7 +63,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                 st.session_state.zoom_level = max(st.session_state.get('zoom_level', 1) - 0.1, 0.5)
         with col3:
             if st.button(texts["update"]):
-                st.experimental_rerun()
+                st.rerun()
         
         # Create candlestick chart
         fig = go.Figure()
