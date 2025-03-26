@@ -53,17 +53,24 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     chart_col, right_sidebar = st.columns([3, 1])
     
     with chart_col:
-        # Chart controls
-        col1, col2, col3 = st.columns([1, 1, 2])
-        with col1:
-            if st.button(texts["pan_left"]):
-                st.session_state.pan_offset = st.session_state.get('pan_offset', 0) - 10
-        with col2:
-            if st.button(texts["pan_right"]):
-                st.session_state.pan_offset = st.session_state.get('pan_offset', 0) + 10
-        with col3:
-            if st.button(texts["update"]):
-                st.rerun()
+        # Auto-update every minute
+        st.markdown("""
+            <script>
+                function reloadPage() {
+                    window.location.reload();
+                }
+                setTimeout(reloadPage, 60000);
+            </script>
+        """, unsafe_allow_html=True)
+        
+        # Update button in top right
+        st.markdown("""
+            <div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+                <button class="stButton" onclick="window.location.reload();">
+                    🔄 {texts["update"]}
+                </button>
+            </div>
+        """, unsafe_allow_html=True)
         
         # Create candlestick chart
         fig = go.Figure()
@@ -236,21 +243,9 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         config = {
             'displayModeBar': True,
             'displaylogo': False,
-            'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoomIn2d', 'zoomOut2d'],
+            'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
             'modeBarButtonsToAdd': ['drawline', 'eraseshape']
         }
-        
-        # Apply pan offset
-        pan_offset = st.session_state.get('pan_offset', 0)
-        if pan_offset != 0:
-            visible_points = len(df) // 2
-            start_idx = max(0, visible_points + pan_offset)
-            end_idx = min(len(df), start_idx + visible_points)
-            fig.update_layout(
-                xaxis=dict(
-                    range=[df['timestamp'].iloc[start_idx], df['timestamp'].iloc[end_idx-1]]
-                )
-            )
         
         # Display chart
         st.plotly_chart(fig, use_container_width=True, config=config)
