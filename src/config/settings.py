@@ -15,115 +15,185 @@ def setup_page_config():
     )
 
 def get_styles():
-    """Get CSS styles for the application"""
     return """
         <style>
-            /* Info Cards */
+            /* Hide Streamlit elements */
+            #MainMenu {visibility: hidden;}
+            header {visibility: hidden;}
+            footer {visibility: hidden;}
+            
+            /* Main block container */
+            .block-container {
+                padding-top: 0rem !important;
+                padding-bottom: 0rem !important;
+            }
+            
+            /* Info cards container */
+            .info-cards-container {
+                padding: 0.5rem;
+                margin-top: 0;
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            /* Info cards */
             .info-card {
-                background-color: rgba(30, 41, 59, 0.5);
-                border: 1px solid rgba(148, 163, 184, 0.2);
-                border-radius: 8px;
+                background-color: #1e293b;
+                border: 1px solid #334155;
+                border-radius: 0.5rem;
                 padding: 0.75rem;
-                margin-bottom: 0.5rem;
+                margin: 0;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                text-align: center;
                 min-height: 65px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                align-items: center;
-                transition: all 0.3s ease;
+                transition: transform 0.2s;
+                flex: 1;
             }
             
             .info-card:hover {
-                background-color: rgba(30, 41, 59, 0.7);
                 transform: translateY(-2px);
             }
             
             .info-label {
+                color: #94a3b8;
                 font-size: 0.8rem;
                 font-weight: 500;
-                color: #94a3b8;
+                margin-bottom: 0.25rem;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
-                margin-bottom: 0.25rem;
             }
             
             .info-value {
                 font-size: 1.25rem;
                 font-weight: 700;
-                letter-spacing: -0.025em;
+                letter-spacing: 0.025em;
+                line-height: 1.2;
             }
             
-            .price-value { color: #3b82f6; }
-            .change-value-up { color: #22c55e; }
-            .change-value-down { color: #ef4444; }
-            .volume-value { color: #f59e0b; }
-            .market-cap-value { color: #8b5cf6; }
+            /* Price value colors */
+            .price-value { color: #3b82f6 !important; }
+            .change-value-up { color: #22c55e !important; }
+            .change-value-down { color: #ef4444 !important; }
+            .volume-value { color: #f59e0b !important; }
+            .market-cap-value { color: #8b5cf6 !important; }
             
-            /* Right Sidebar */
+            /* Right sidebar styles */
             .right-sidebar {
-                background-color: rgba(30, 41, 59, 0.5);
-                border: 1px solid rgba(148, 163, 184, 0.2);
-                border-radius: 8px;
-                padding: 1rem;
+                background-color: #1e293b;
+                border-radius: 0.5rem;
+                padding: 0.75rem;
+                margin: 0;
             }
             
             .right-sidebar h3 {
-                font-size: 1.1rem;
-                font-weight: 600;
+                color: #f8fafc;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+                border-bottom: 1px solid #334155;
+                padding-bottom: 0.25rem;
+            }
+            
+            .right-sidebar h4 {
                 color: #e2e8f0;
-                margin-bottom: 1rem;
-                padding-bottom: 0.5rem;
-                border-bottom: 1px solid rgba(148, 163, 184, 0.2);
-            }
-            
-            .level-section {
-                margin-bottom: 1rem;
-            }
-            
-            .level-section h4 {
                 font-size: 0.9rem;
-                font-weight: 500;
-                color: #94a3b8;
-                margin: 0.5rem 0;
-                padding: 0.25rem 0;
-                border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+                margin: 0.25rem 0;
             }
             
-            .level-list {
+            .right-sidebar ul {
                 list-style: none;
                 padding: 0;
-                margin: 0.5rem 0;
+                margin: 0;
             }
             
-            .level-list li {
+            .right-sidebar li {
+                color: #94a3b8;
+                font-size: 0.85rem;
+                padding: 0.15rem 0;
+                margin: 0;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                padding: 0.25rem 0;
-                font-size: 0.9rem;
-            }
-            
-            .resistance-level {
-                color: #ef4444;
-                font-weight: 600;
             }
             
             .support-level {
                 color: #22c55e;
-                font-weight: 600;
+                font-weight: 500;
+            }
+            
+            .resistance-level {
+                color: #ef4444;
+                font-weight: 500;
             }
             
             .level-strength {
                 color: #94a3b8;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
+                margin-left: 0.5rem;
             }
             
-            /* Hide Streamlit Components */
-            #MainMenu, header, footer {display: none;}
-            .stDeployButton {display: none;}
-            .appview-container .main .block-container {
-                padding-top: 1rem;
-                padding-bottom: 1rem;
+            /* Titles */
+            .stMarkdown h1 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            .stMarkdown h2 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            .stMarkdown h3 {
+                color: #f8fafc;
+                margin-bottom: 0.5rem;
+            }
+            
+            /* Sidebar */
+            .css-1d391kg {
+                background-color: #0f172a;
+            }
+            
+            /* Main content */
+            .main .block-container {
+                background-color: #0f172a;
+            }
+            
+            /* Buttons */
+            .stButton button {
+                background-color: #3b82f6;
+                color: white;
+                border: none;
+                border-radius: 0.375rem;
+                padding: 0.5rem 1rem;
+                font-weight: 500;
+                transition: background-color 0.2s;
+            }
+            
+            .stButton button:hover {
+                background-color: #2563eb;
+            }
+            
+            /* Checkboxes and radio buttons */
+            .stCheckbox label, .stRadio label {
+                color: #f8fafc;
+            }
+            
+            /* Select boxes */
+            .stSelectbox select {
+                background-color: #1e293b;
+                color: #f8fafc;
+                border: 1px solid #334155;
+                border-radius: 0.375rem;
+            }
+            
+            /* Number inputs */
+            .stNumberInput input {
+                background-color: #1e293b;
+                color: #f8fafc;
+                border: 1px solid #334155;
+                border-radius: 0.375rem;
             }
         </style>
     """ 
