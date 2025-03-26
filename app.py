@@ -13,12 +13,11 @@ st.markdown("""
     .sidebar .sidebar-content {background-color: #252526; color: #d4d4d4;}
     .stButton>button {background-color: #3c3c3c; color: #d4d4d4;}
     .stSelectbox, .stMultiselect, .stSlider {color: #d4d4d4;}
-    /* حذف اسکرول و تنظیم ارتفاع */
     .reportview-container .main .block-container {padding-top: 0rem; padding-bottom: 0rem; max-height: 100vh;}
     </style>
 """, unsafe_allow_html=True)
 
-# دیکشنری‌های متن برای دو زبان
+# دیکشنری‌های متن
 texts_en = {
     "title": "Crypto Chart (KuCoin API)",
     "pair": "Pair",
@@ -40,7 +39,10 @@ texts_en = {
     "update": "Update",
     "price_label": "Price (USDT)",
     "current_price": "Current Price: {price:,.2f} USDT",
-    "no_data": "No data available."
+    "no_data": "No data available.",
+    "zoom_in": "Zoom In",
+    "zoom_out": "Zoom Out",
+    "pan": "Pan"
 }
 
 texts_fa = {
@@ -64,10 +66,13 @@ texts_fa = {
     "update": "به‌روزرسانی",
     "price_label": "قیمت (USDT)",
     "current_price": "قیمت فعلی: {price:,.2f} USDT",
-    "no_data": "داده‌ای برای نمایش وجود ندارد."
+    "no_data": "داده‌ای برای نمایش وجود ندارد.",
+    "zoom_in": "بزرگ‌نمایی",
+    "zoom_out": "کوچک‌نمایی",
+    "pan": "جابه‌جایی"
 }
 
-# انتخاب زبان تو سایدبار
+# سایدبار
 with st.sidebar:
     language = st.selectbox("Language / زبان", ["English", "Persian"], index=0)
     texts = texts_en if language == "English" else texts_fa
@@ -185,10 +190,18 @@ def calculate_rsi(df, period=14):
 
 # تابع رسم چارت
 def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimoku_params):
-    # نمایش قیمت فعلی
     if not df.empty and 'close' in df.columns and not df['close'].isna().all():
         current_price = df['close'].iloc[-1]
         st.markdown(f"<div style='text-align: center; color: #00ff00; padding: 5px;'>{texts['current_price'].format(price=current_price)}</div>", unsafe_allow_html=True)
+
+    # نوار ابزار ساده
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        zoom_in = st.button(texts["zoom_in"])
+    with col2:
+        zoom_out = st.button(texts["zoom_out"])
+    with col3:
+        pan_mode = st.button(texts["pan"])
 
     fig = go.Figure()
     fig.add_trace(go.Candlestick(
@@ -253,10 +266,10 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
             showgrid=True,
             gridcolor="#444"
         ),
-        dragmode="pan",
+        dragmode="pan" if pan_mode else "zoom",
         hovermode="x unified",
-        height=650,  # تنظیم ارتفاع برای فیت شدن تو صفحه
-        margin=dict(l=40, r=40, t=50, b=20),  # فضای کافی برای قیمت فعلی
+        height=600,  # تنظیم ارتفاع برای فیت شدن
+        margin=dict(l=40, r=40, t=80, b=20),
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         paper_bgcolor="#1e1e1e",
@@ -290,6 +303,10 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
         modebar_add=["v1hovermode", "toggleSpikelines"],
         modebar_remove=["lasso2d", "select2d"]
     )
+    if zoom_in:
+        fig.update_layout(xaxis_range=[df['timestamp'].iloc[-50], df['timestamp'].iloc[-1]])
+    if zoom_out:
+        fig.update_layout(xaxis_range=[df['timestamp'].iloc[0], df['timestamp'].iloc[-1]])
     st.plotly_chart(fig, use_container_width=True)
 
 # نگه‌داری داده‌ها
@@ -301,7 +318,6 @@ if ('df' not in st.session_state or
     st.session_state.timeframe = selected_timeframe
     st.session_state.coin = selected_coin
 
-# عنوان اصلی و چارت
 st.title(texts["title"])
 if st.session_state.df is not None:
     ichimoku_params = {"tenkan": 9, "kijun": 26, "senkou": 52} if "Ichimoku" not in selected_indicators else ichimoku_params
