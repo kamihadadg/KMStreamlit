@@ -49,6 +49,9 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                     <div class="info-value market-cap-value">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
+        
+        # Add spacing between info boxes and chart
+        st.markdown("<div style='margin-bottom: 2rem;'></div>", unsafe_allow_html=True)
     
     # Create two columns for chart and right sidebar
     chart_col, right_sidebar = st.columns([3, 1])
