@@ -13,6 +13,8 @@ st.markdown("""
     .sidebar .sidebar-content {background-color: #252526; color: #d4d4d4;}
     .stButton>button {background-color: #3c3c3c; color: #d4d4d4;}
     .stSelectbox, .stMultiselect, .stSlider {color: #d4d4d4;}
+    /* حذف اسکرول و تنظیم ارتفاع */
+    .reportview-container .main .block-container {padding-top: 0rem; padding-bottom: 0rem; max-height: 100vh;}
     </style>
 """, unsafe_allow_html=True)
 
@@ -37,6 +39,7 @@ texts_en = {
     "rsi_period": "RSI Period",
     "update": "Update",
     "price_label": "Price (USDT)",
+    "current_price": "Current Price: {price:,.2f} USDT",
     "no_data": "No data available."
 }
 
@@ -60,6 +63,7 @@ texts_fa = {
     "rsi_period": "دوره RSI",
     "update": "به‌روزرسانی",
     "price_label": "قیمت (USDT)",
+    "current_price": "قیمت فعلی: {price:,.2f} USDT",
     "no_data": "داده‌ای برای نمایش وجود ندارد."
 }
 
@@ -68,7 +72,6 @@ with st.sidebar:
     language = st.selectbox("Language / زبان", ["English", "Persian"], index=0)
     texts = texts_en if language == "English" else texts_fa
 
-    # انتخاب جفت‌ارز
     coin_options = {
         "BTC/USDT": "BTC-USDT",
         "ETH/USDT": "ETH-USDT",
@@ -80,7 +83,6 @@ with st.sidebar:
     selected_coin_label = st.selectbox(texts["pair"], list(coin_options.keys()))
     selected_coin = coin_options[selected_coin_label]
 
-    # انتخاب تایم‌فریم
     timeframe_options = {
         "1m": "1min",
         "5m": "5min",
@@ -92,11 +94,9 @@ with st.sidebar:
     selected_timeframe_label = st.selectbox(texts["timeframe"], list(timeframe_options.keys()))
     selected_timeframe = timeframe_options[selected_timeframe_label]
 
-    # انتخاب اندیکاتورها
     indicator_options = ["MA", "MACD", "Ichimoku", "RSI"]
     selected_indicators = st.multiselect(texts["indicators"], indicator_options, default=[])
 
-    # تنظیمات اندیکاتورها
     ma_periods = {}
     if "MA" in selected_indicators:
         st.subheader(texts["ma"])
@@ -133,7 +133,7 @@ def fetch_bitcoin_data(symbol, timeframe):
     params = {
         'type': timeframe,
         'symbol': symbol,
-        'startAt': int(time.time()) - 60*24*3600,  # ۶۰ روز قبل
+        'startAt': int(time.time()) - 60*24*3600,
         'endAt': int(time.time())
     }
     try:
@@ -185,6 +185,11 @@ def calculate_rsi(df, period=14):
 
 # تابع رسم چارت
 def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimoku_params):
+    # نمایش قیمت فعلی
+    if not df.empty and 'close' in df.columns and not df['close'].isna().all():
+        current_price = df['close'].iloc[-1]
+        st.markdown(f"<div style='text-align: center; color: #00ff00; padding: 5px;'>{texts['current_price'].format(price=current_price)}</div>", unsafe_allow_html=True)
+
     fig = go.Figure()
     fig.add_trace(go.Candlestick(
         x=df['timestamp'],
@@ -250,8 +255,8 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period, ichimo
         ),
         dragmode="pan",
         hovermode="x unified",
-        height=700,
-        margin=dict(l=40, r=40, t=30, b=20),
+        height=650,  # تنظیم ارتفاع برای فیت شدن تو صفحه
+        margin=dict(l=40, r=40, t=50, b=20),  # فضای کافی برای قیمت فعلی
         showlegend=True,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         paper_bgcolor="#1e1e1e",
@@ -296,9 +301,8 @@ if ('df' not in st.session_state or
     st.session_state.timeframe = selected_timeframe
     st.session_state.coin = selected_coin
 
-# عنوان اصلی
+# عنوان اصلی و چارت
 st.title(texts["title"])
-
 if st.session_state.df is not None:
     ichimoku_params = {"tenkan": 9, "kijun": 26, "senkou": 52} if "Ichimoku" not in selected_indicators else ichimoku_params
     plot_candlestick(st.session_state.df, selected_indicators, ma_periods, macd_params, rsi_period, ichimoku_params)
