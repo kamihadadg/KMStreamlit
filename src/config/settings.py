@@ -76,17 +76,23 @@ def get_styles():
                 border-bottom: 1px solid rgba(148, 163, 184, 0.2);
             }
             
-            .right-sidebar h4 {
+            .level-section {
+                margin-bottom: 1rem;
+            }
+            
+            .level-section h4 {
                 font-size: 0.9rem;
                 font-weight: 500;
                 color: #94a3b8;
                 margin: 0.5rem 0;
+                padding: 0.25rem 0;
+                border-bottom: 1px solid rgba(148, 163, 184, 0.1);
             }
             
             .level-list {
                 list-style: none;
                 padding: 0;
-                margin: 0 0 1rem 0;
+                margin: 0.5rem 0;
             }
             
             .level-list li {
