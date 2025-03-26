@@ -99,7 +99,8 @@ with st.sidebar:
         st.markdown("##### " + texts["ma_settings"])
         ma_periods = {}
         for i in range(1, 6):
-            period = st.number_input(f"{texts['ma_period']} {i}", min_value=1, max_value=200, value=20 if i == 1 else 50 if i == 2 else 100 if i == 3 else 200 if i == 4 else 0)
+            default_value = 20 if i == 1 else 50 if i == 2 else 100 if i == 3 else 200 if i == 4 else 20
+            period = st.number_input(f"{texts['ma_period']} {i}", min_value=1, max_value=200, value=default_value)
             if period > 0:
                 ma_periods[f"MA{period}"] = period
     else:
