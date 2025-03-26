@@ -18,7 +18,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["current_price"]}</div>
-                    <div class="info-value">${float(market_info['last']):,.2f}</div>
+                    <div class="info-value" style="color: #3b82f6">${float(market_info['last']):,.2f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -37,7 +37,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["volume"]}</div>
-                    <div class="info-value">${float(market_info['volValue']):,.0f}</div>
+                    <div class="info-value" style="color: #f59e0b">${float(market_info['volValue']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -45,7 +45,7 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["market_cap"]}</div>
-                    <div class="info-value">${float(market_info['vol']):,.0f}</div>
+                    <div class="info-value" style="color: #8b5cf6">${float(market_info['vol']):,.0f}</div>
                 </div>
             """, unsafe_allow_html=True)
     
@@ -159,19 +159,18 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
     # Add Support and Resistance Levels
     support_levels, resistance_levels = find_support_resistance(df)
     
-    # Display support and resistance levels
-    st.markdown(f"### {texts['support_levels']} & {texts['resistance_levels']}")
-    col1, col2 = st.columns(2)
-    
-    with col1:
+    # Display support and resistance levels in a sidebar
+    with st.sidebar:
+        st.markdown("---")
+        st.markdown(f"### {texts['support_levels']} & {texts['resistance_levels']}")
+        
         st.markdown(f"#### {texts['support_levels']}")
         for price, _, strength in support_levels:
             st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})")
             fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
                          annotation_text=f"{texts['support_levels']}: ${price:,.2f}", 
                          annotation_position="right")
-    
-    with col2:
+        
         st.markdown(f"#### {texts['resistance_levels']}")
         for price, _, strength in resistance_levels:
             st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})")
