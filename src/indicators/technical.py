@@ -36,4 +36,45 @@ def calculate_volume_profile(df, bins=10):
     """Calculate Volume Profile"""
     price_bins = pd.qcut(df['close'], q=bins, duplicates='drop')
     volume_profile = df.groupby(price_bins)['volume'].sum()
-    return volume_profile 
+    return volume_profile
+
+def find_support_resistance(df, window=20, threshold=0.02):
+    """
+    Find support and resistance levels using local minima and maxima
+    Returns: list of tuples (price, type, strength)
+    """
+    levels = []
+    
+    # Get local minima and maxima
+    df['local_min'] = df['low'].rolling(window=window, center=True).min()
+    df['local_max'] = df['high'].rolling(window=window, center=True).max()
+    
+    # Find support levels (local minima)
+    for i in range(window, len(df) - window):
+        if df['low'].iloc[i] == df['local_min'].iloc[i]:
+            price = df['low'].iloc[i]
+            # Check if this level is significant enough
+            if not any(abs(price - level[0]) / price < threshold for level in levels):
+                # Calculate strength based on number of touches
+                touches = sum(1 for j in range(i-window, i+window+1) 
+                            if abs(df['low'].iloc[j] - price) / price < threshold)
+                levels.append((price, 'support', touches))
+    
+    # Find resistance levels (local maxima)
+    for i in range(window, len(df) - window):
+        if df['high'].iloc[i] == df['local_max'].iloc[i]:
+            price = df['high'].iloc[i]
+            # Check if this level is significant enough
+            if not any(abs(price - level[0]) / price < threshold for level in levels):
+                # Calculate strength based on number of touches
+                touches = sum(1 for j in range(i-window, i+window+1) 
+                            if abs(df['high'].iloc[j] - price) / price < threshold)
+                levels.append((price, 'resistance', touches))
+    
+    # Sort levels by strength and return top 5 for each type
+    support_levels = sorted([level for level in levels if level[1] == 'support'], 
+                          key=lambda x: x[2], reverse=True)[:5]
+    resistance_levels = sorted([level for level in levels if level[1] == 'resistance'], 
+                             key=lambda x: x[2], reverse=True)[:5]
+    
+    return support_levels, resistance_levels 

@@ -2,7 +2,7 @@ import streamlit as st
 import plotly.graph_objects as go
 from src.indicators.technical import (
     calculate_ma, calculate_macd, calculate_ichimoku,
-    calculate_rsi, calculate_volume_profile
+    calculate_rsi, calculate_volume_profile, find_support_resistance
 )
 from src.api.kucoin import fetch_market_info
 
@@ -155,6 +155,29 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
             line=dict(color='#8b5cf6', width=2),
             yaxis='y3'
         ))
+    
+    # Add Support and Resistance Levels
+    support_levels, resistance_levels = find_support_resistance(df)
+    
+    # Display support and resistance levels
+    st.markdown(f"### {texts['support_levels']} & {texts['resistance_levels']}")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"#### {texts['support_levels']}")
+        for price, _, strength in support_levels:
+            st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})")
+            fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
+                         annotation_text=f"{texts['support_levels']}: ${price:,.2f}", 
+                         annotation_position="right")
+    
+    with col2:
+        st.markdown(f"#### {texts['resistance_levels']}")
+        for price, _, strength in resistance_levels:
+            st.markdown(f"- ${price:,.2f} ({texts['strength']}: {strength})")
+            fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
+                         annotation_text=f"{texts['resistance_levels']}: ${price:,.2f}", 
+                         annotation_position="right")
     
     # Update layout
     fig.update_layout(

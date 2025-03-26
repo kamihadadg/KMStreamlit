@@ -37,7 +37,10 @@ texts_en = {
     "zoom_out": "Zoom Out",
     "pan": "Pan Mode",
     "error_no_data": "No data available.",
-    "update": "Update Chart"
+    "update": "Update Chart",
+    "support_levels": "Support Levels",
+    "resistance_levels": "Resistance Levels",
+    "strength": "Strength"
 }
 
 texts_fa = {
@@ -79,7 +82,10 @@ texts_fa = {
     "zoom_out": "کوچک‌نمایی",
     "pan": "حالت جابجایی",
     "error_no_data": "داده‌ای برای نمایش وجود ندارد.",
-    "update": "بروزرسانی نمودار"
+    "update": "بروزرسانی نمودار",
+    "support_levels": "سطوح حمایت",
+    "resistance_levels": "سطوح مقاومت",
+    "strength": "قدرت"
 }
 
 texts_de = {
@@ -121,7 +127,10 @@ texts_de = {
     "zoom_out": "Verkleinern",
     "pan": "Verschiebungsmodus",
     "error_no_data": "Keine Daten verfügbar.",
-    "update": "Chart aktualisieren"
+    "update": "Chart aktualisieren",
+    "support_levels": "Unterstützungsniveaus",
+    "resistance_levels": "Widerstandsniveaus",
+    "strength": "Stärke"
 }
 
 def get_texts(language):
