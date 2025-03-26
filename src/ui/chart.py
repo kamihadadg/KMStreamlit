@@ -56,11 +56,11 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         # Chart controls
         col1, col2, col3 = st.columns([1, 1, 2])
         with col1:
-            if st.button(texts["zoom_in"]):
-                st.session_state.zoom_level = min(st.session_state.get('zoom_level', 1) + 0.1, 2)
+            if st.button(texts["pan_left"]):
+                st.session_state.pan_offset = st.session_state.get('pan_offset', 0) - 10
         with col2:
-            if st.button(texts["zoom_out"]):
-                st.session_state.zoom_level = max(st.session_state.get('zoom_level', 1) - 0.1, 0.5)
+            if st.button(texts["pan_right"]):
+                st.session_state.pan_offset = st.session_state.get('pan_offset', 0) + 10
         with col3:
             if st.button(texts["update"]):
                 st.rerun()
@@ -236,20 +236,21 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         config = {
             'displayModeBar': True,
             'displaylogo': False,
-            'modeBarButtonsToRemove': ['lasso2d', 'select2d'],
+            'modeBarButtonsToRemove': ['lasso2d', 'select2d', 'zoomIn2d', 'zoomOut2d'],
             'modeBarButtonsToAdd': ['drawline', 'eraseshape']
         }
         
-        # Apply zoom level
-        zoom_level = st.session_state.get('zoom_level', 1)
-        fig.update_layout(
-            yaxis=dict(
-                range=[
-                    df['low'].min() * (1 - (zoom_level - 1) * 0.1),
-                    df['high'].max() * (1 + (zoom_level - 1) * 0.1)
-                ]
+        # Apply pan offset
+        pan_offset = st.session_state.get('pan_offset', 0)
+        if pan_offset != 0:
+            visible_points = len(df) // 2
+            start_idx = max(0, visible_points + pan_offset)
+            end_idx = min(len(df), start_idx + visible_points)
+            fig.update_layout(
+                xaxis=dict(
+                    range=[df['timestamp'].iloc[start_idx], df['timestamp'].iloc[end_idx-1]]
+                )
             )
-        )
         
         # Display chart
         st.plotly_chart(fig, use_container_width=True, config=config)

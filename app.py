@@ -29,37 +29,23 @@ with st.sidebar:
     st.title(texts["title"])
     st.markdown(texts["subtitle"])
     
-    # Language selection
-    st.subheader(texts["language"])
-    language = st.radio("", ["English", "Persian", "German"], key="language_radio")
-    if language != st.session_state.language:
-        st.session_state.language = language
-        texts = get_texts(language)
+    # Language and Theme selection in one row
+    col1, col2 = st.columns(2)
+    with col1:
+        st.caption(texts["language"])
+        language = st.selectbox("", ["English", "Persian", "German"], key="language_select", label_visibility="collapsed")
+        if language != st.session_state.language:
+            st.session_state.language = language
+            texts = get_texts(language)
     
-    # Theme selection
-    st.subheader(texts["theme"])
-    theme = st.radio("", [texts["dark"], texts["light"]], key="theme_radio")
-    if theme != st.session_state.theme:
-        st.session_state.theme = theme
-    
-    # Chart settings
-    st.subheader(texts["chart_settings"])
-    show_grid = st.checkbox(texts["show_grid"], value=st.session_state.show_grid)
-    if show_grid != st.session_state.show_grid:
-        st.session_state.show_grid = show_grid
-    
-    show_crosshair = st.checkbox(texts["show_crosshair"], value=st.session_state.show_crosshair)
-    if show_crosshair != st.session_state.show_crosshair:
-        st.session_state.show_crosshair = show_crosshair
-    
-    # Timezone selection
-    st.subheader(texts["timezone"])
-    timezone = st.selectbox("", ["UTC", "Asia/Tehran"], key="timezone_select")
-    if timezone != st.session_state.timezone:
-        st.session_state.timezone = timezone
+    with col2:
+        st.caption(texts["theme"])
+        theme = st.selectbox("", [texts["dark"], texts["light"]], key="theme_select", label_visibility="collapsed")
+        if theme != st.session_state.theme:
+            st.session_state.theme = theme
     
     # Cryptocurrency selection
-    st.subheader(texts["select_coin"])
+    st.caption(texts["select_coin"])
     coins = {
         "BTC": "Bitcoin",
         "ETH": "Ethereum",
@@ -71,11 +57,11 @@ with st.sidebar:
         "AVAX": "Avalanche",
         "MATIC": "Polygon"
     }
-    selected_coin = st.selectbox("", list(coins.keys()))
+    selected_coin = st.selectbox("", list(coins.keys()), label_visibility="collapsed")
     selected_coin_label = f"{selected_coin}-USDT"
     
     # Timeframe selection
-    st.subheader(texts["select_timeframe"])
+    st.caption(texts["select_timeframe"])
     timeframes = {
         "1m": "1 Minute",
         "5m": "5 Minutes",
@@ -86,17 +72,27 @@ with st.sidebar:
         "1d": "1 Day",
         "1w": "1 Week"
     }
-    selected_timeframe = st.selectbox("", list(timeframes.keys()))
+    selected_timeframe = st.selectbox("", list(timeframes.keys()), index=5, label_visibility="collapsed")
     selected_timeframe_label = timeframes[selected_timeframe]
     
-    # Indicators
-    st.subheader(texts["indicators"])
+    # Chart settings
+    st.caption(texts["chart_settings"])
+    show_grid = st.checkbox(texts["show_grid"], value=st.session_state.show_grid)
+    if show_grid != st.session_state.show_grid:
+        st.session_state.show_grid = show_grid
+    
+    show_crosshair = st.checkbox(texts["show_crosshair"], value=st.session_state.show_crosshair)
+    if show_crosshair != st.session_state.show_crosshair:
+        st.session_state.show_crosshair = show_crosshair
+    
+    # Indicators with reduced spacing
+    st.caption(texts["indicators"])
     indicators = []
     
     # Moving Averages
     if st.checkbox(texts["ma"]):
         indicators.append("MA")
-        st.markdown("##### " + texts["ma_settings"])
+        st.caption(texts["ma_settings"])
         ma_periods = {}
         for i in range(1, 6):
             default_value = 20 if i == 1 else 50 if i == 2 else 100 if i == 3 else 200 if i == 4 else 20
@@ -109,7 +105,7 @@ with st.sidebar:
     # MACD
     if st.checkbox(texts["macd"]):
         indicators.append("MACD")
-        st.markdown("##### " + texts["macd_settings"])
+        st.caption(texts["macd_settings"])
         macd_params = {
             "fast": st.number_input(texts["macd_fast"], min_value=1, max_value=100, value=12),
             "slow": st.number_input(texts["macd_slow"], min_value=1, max_value=100, value=26),
@@ -121,7 +117,7 @@ with st.sidebar:
     # RSI
     if st.checkbox(texts["rsi"]):
         indicators.append("RSI")
-        st.markdown("##### " + texts["rsi_settings"])
+        st.caption(texts["rsi_settings"])
         rsi_period = st.number_input(texts["rsi_period"], min_value=1, max_value=100, value=14)
     else:
         rsi_period = 14
@@ -129,7 +125,7 @@ with st.sidebar:
     # Ichimoku
     if st.checkbox(texts["ichimoku"]):
         indicators.append("Ichimoku")
-        st.markdown("##### " + texts["ichimoku_settings"])
+        st.caption(texts["ichimoku_settings"])
         ichimoku_params = {
             "tenkan": st.number_input(texts["ichimoku_tenkan"], min_value=1, max_value=100, value=9),
             "kijun": st.number_input(texts["ichimoku_kijun"], min_value=1, max_value=100, value=26),
@@ -137,6 +133,12 @@ with st.sidebar:
         }
     else:
         ichimoku_params = {"tenkan": 9, "kijun": 26, "senkou": 52}
+    
+    # Timezone selection moved to the end
+    st.caption(texts["timezone"])
+    timezone = st.selectbox("", ["UTC", "Asia/Tehran"], key="timezone_select", label_visibility="collapsed")
+    if timezone != st.session_state.timezone:
+        st.session_state.timezone = timezone
 
 # Main content
 # st.title(texts["title"])

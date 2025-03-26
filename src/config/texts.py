@@ -43,7 +43,9 @@ texts = {
         "price_label": "Price",
         "change_label": "Change",
         "volume_label": "Volume",
-        "market_cap_label": "Market Cap"
+        "market_cap_label": "Market Cap",
+        "pan_left": "← Pan Left",
+        "pan_right": "Pan Right →"
     },
     "Persian": {
         "title": "نمودار ارز دیجیتال",
@@ -76,8 +78,8 @@ texts = {
         "ichimoku_kijun": "دوره کیجون",
         "ichimoku_senkou": "دوره سنکو",
         "zoom_in": "بزرگنمایی",
-        "zoom_out": "کوچکنمایی",
-        "update": "بروزرسانی",
+        "zoom_out": "کوچک‌نمایی",
+        "update": "به‌روزرسانی",
         "current_price": "قیمت فعلی",
         "price_change": "تغییر قیمت",
         "volume": "حجم ۲۴ ساعت",
@@ -89,7 +91,9 @@ texts = {
         "price_label": "قیمت",
         "change_label": "تغییر",
         "volume_label": "حجم",
-        "market_cap_label": "ارزش بازار"
+        "market_cap_label": "ارزش بازار",
+        "pan_left": "← حرکت به چپ",
+        "pan_right": "حرکت به راست →"
     },
     "German": {
         "title": "Krypto-Chart",
@@ -135,7 +139,9 @@ texts = {
         "price_label": "Preis",
         "change_label": "Änderung",
         "volume_label": "Volumen",
-        "market_cap_label": "Marktkapitalisierung"
+        "market_cap_label": "Marktkapitalisierung",
+        "pan_left": "← Nach Links",
+        "pan_right": "Nach Rechts →"
     }
 }
 
