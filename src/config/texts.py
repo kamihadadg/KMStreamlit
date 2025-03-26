@@ -14,7 +14,7 @@ texts_en = {
     "indicators": "Technical Indicators",
     "ma": "Moving Averages",
     "ma_settings": "MA Settings",
-    "ma_period": "MA Period",
+    "ma_period": "Period",
     "macd": "MACD",
     "macd_settings": "MACD Settings",
     "macd_fast": "Fast Period",
@@ -22,7 +22,7 @@ texts_en = {
     "macd_signal": "Signal Period",
     "rsi": "RSI",
     "rsi_settings": "RSI Settings",
-    "rsi_period": "RSI Period",
+    "rsi_period": "Period",
     "ichimoku": "Ichimoku Cloud",
     "ichimoku_settings": "Ichimoku Settings",
     "ichimoku_tenkan": "Tenkan Period",
@@ -36,7 +36,8 @@ texts_en = {
     "zoom_in": "Zoom In",
     "zoom_out": "Zoom Out",
     "pan": "Pan Mode",
-    "error_no_data": "No data available."
+    "error_no_data": "No data available.",
+    "update": "Update Chart"
 }
 
 texts_fa = {
@@ -55,7 +56,7 @@ texts_fa = {
     "indicators": "اندیکاتورهای تکنیکال",
     "ma": "میانگین‌های متحرک",
     "ma_settings": "تنظیمات میانگین متحرک",
-    "ma_period": "دوره میانگین متحرک",
+    "ma_period": "دوره",
     "macd": "مکدی",
     "macd_settings": "تنظیمات مکدی",
     "macd_fast": "دوره سریع",
@@ -63,7 +64,7 @@ texts_fa = {
     "macd_signal": "دوره سیگنال",
     "rsi": "RSI",
     "rsi_settings": "تنظیمات RSI",
-    "rsi_period": "دوره RSI",
+    "rsi_period": "دوره",
     "ichimoku": "ابر ایچیموکو",
     "ichimoku_settings": "تنظیمات ایچیموکو",
     "ichimoku_tenkan": "دوره تنکان",
@@ -77,7 +78,8 @@ texts_fa = {
     "zoom_in": "بزرگ‌نمایی",
     "zoom_out": "کوچک‌نمایی",
     "pan": "حالت جابجایی",
-    "error_no_data": "داده‌ای برای نمایش وجود ندارد."
+    "error_no_data": "داده‌ای برای نمایش وجود ندارد.",
+    "update": "بروزرسانی نمودار"
 }
 
 texts_de = {
@@ -96,15 +98,15 @@ texts_de = {
     "indicators": "Technische Indikatoren",
     "ma": "Gleitende Durchschnitte",
     "ma_settings": "MA-Einstellungen",
-    "ma_period": "MA-Periode",
+    "ma_period": "Periode",
     "macd": "MACD",
     "macd_settings": "MACD-Einstellungen",
     "macd_fast": "Schnelle Periode",
     "macd_slow": "Langsame Periode",
-    "macd_signal": "Signal-Periode",
+    "macd_signal": "Signalperiode",
     "rsi": "RSI",
     "rsi_settings": "RSI-Einstellungen",
-    "rsi_period": "RSI-Periode",
+    "rsi_period": "Periode",
     "ichimoku": "Ichimoku Cloud",
     "ichimoku_settings": "Ichimoku-Einstellungen",
     "ichimoku_tenkan": "Tenkan-Periode",
@@ -118,7 +120,8 @@ texts_de = {
     "zoom_in": "Vergrößern",
     "zoom_out": "Verkleinern",
     "pan": "Verschiebungsmodus",
-    "error_no_data": "Keine Daten verfügbar."
+    "error_no_data": "Keine Daten verfügbar.",
+    "update": "Chart aktualisieren"
 }
 
 def get_texts(language):
