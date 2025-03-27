@@ -29,6 +29,11 @@ def get_styles():
         max-width: 95rem; 
     }
 
+    /* Chart Container */
+    .js-plotly-plot {
+        height: 800px !important;
+    }
+
     /* Info Cards */
     .info-card { 
         background-color: #ffffff; 
@@ -160,6 +165,9 @@ def get_styles():
         align-items: center;
         justify-content: center;
         font-size: 1.5rem;
+        margin: 0;
+        min-width: 40px;
+        min-height: 40px;
     }
 
     .stButton > button:hover { 

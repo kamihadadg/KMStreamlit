@@ -125,7 +125,7 @@ with st.sidebar:
     with ma_col1:
         ma_period = st.number_input("Period", min_value=1, value=20, key="ma_period")
     with ma_col2:
-        if st.button("+", key="add_ma"):
+        if st.button("'+'", key="add_ma"):
             st.session_state.indicators['MA'].append({
                 'period': ma_period,
                 'color': '#' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)])
@@ -151,7 +151,7 @@ with st.sidebar:
     with macd_col3:
         signal_period = st.number_input("Signal", min_value=1, value=9, key="macd_signal")
     with macd_col4:
-        if st.button("+", key="add_macd"):
+        if st.button("'+'", key="add_macd"):
             st.session_state.indicators['MACD'].append({
                 'fast': fast_period,
                 'slow': slow_period,
@@ -174,7 +174,7 @@ with st.sidebar:
     with rsi_col1:
         rsi_period = st.number_input("Period", min_value=1, value=14, key="rsi_period")
     with rsi_col2:
-        if st.button("+", key="add_rsi"):
+        if st.button("'+'", key="add_rsi"):
             st.session_state.indicators['RSI'].append({
                 'period': rsi_period,
                 'color': '#' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)])
@@ -200,7 +200,7 @@ with st.sidebar:
     with ichi_col3:
         senkou = st.number_input("Senkou", min_value=1, value=52, key="ichi_senkou")
     with ichi_col4:
-        if st.button("+", key="add_ichi"):
+        if st.button("'+'", key="add_ichi"):
             st.session_state.indicators['Ichimoku'].append({
                 'tenkan': tenkan,
                 'kijun': kijun,

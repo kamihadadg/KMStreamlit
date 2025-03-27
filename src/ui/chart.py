@@ -18,7 +18,7 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["price_label"]}</div>
-                    <div class="info-value price-value">${float(market_info['last']):,.2f}</div>
+                    <div class="info-value price-value">${float(market_info['last']):,.3f}</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -28,7 +28,7 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             st.markdown(f"""
                 <div class="info-card">
                     <div class="info-label">{texts["change_label"]}</div>
-                    <div class="info-value {change_class}">{change_value:+.2f}%</div>
+                    <div class="info-value {change_class}">{change_value:+.3f}%</div>
                 </div>
             """, unsafe_allow_html=True)
         
@@ -209,9 +209,7 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             # Only show support lines below current price
             if price < current_price:
                 fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
-                             line_width=1,
-                             annotation_text=f"S: ${price:,.2f}", 
-                             annotation_position="right")
+                             line_width=0.5)
         
         for price, _, strength in resistance_levels:
             # Skip levels with strength 11
@@ -221,9 +219,7 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             # Only show resistance lines above current price
             if price > current_price:
                 fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
-                             line_width=1,
-                             annotation_text=f"R: ${price:,.2f}", 
-                             annotation_position="right")
+                             line_width=0.5)
         
         # Update layout for multiple y-axes
         layout_updates = {
@@ -313,8 +309,8 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             if price > current_price:
                 st.markdown(f"""
                     <li class="level-item">
-                        <span class="level-price resistance">${price:,.2f}</span>
-                        <span class="level-strength">Strength: {strength}</span>
+                        <span class="level-price resistance">${price:,.3f}</span>
+                       
                     </li>
                 """, unsafe_allow_html=True)
         
@@ -333,8 +329,8 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             if price < current_price:
                 st.markdown(f"""
                     <li class="level-item">
-                        <span class="level-price support">${price:,.2f}</span>
-                        <span class="level-strength">Strength: {strength}</span>
+                        <span class="level-price support">${price:,.3f}</span>
+                        
                     </li>
                 """, unsafe_allow_html=True)
         
