@@ -289,7 +289,7 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             <div class="sidebar-section">
                 <h3>Support & Resistance Levels</h3>
                 <div class="level-section">
-
+    
         """, unsafe_allow_html=True)
         
         # Display resistance levels above current price
