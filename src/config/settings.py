@@ -31,8 +31,8 @@ def get_styles():
 
     /* Info Cards */
     .info-card { 
-        background-color: rgba(255, 255, 255, 0.1); 
-        border: 1px solid rgba(255, 255, 255, 0.2); 
+        background-color: #ffffff; 
+        border: 1px solid #e2e8f0; 
         border-radius: 0.5rem; 
         padding: 0.75rem; 
         min-height: 65px; 
@@ -41,11 +41,13 @@ def get_styles():
         justify-content: center; 
         align-items: center; 
         transition: all 0.2s ease-in-out; 
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .info-card:hover { 
-        border-color: rgba(255, 255, 255, 0.3); 
+        border-color: #3b82f6; 
         transform: translateY(-2px); 
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .info-label { 
@@ -73,11 +75,12 @@ def get_styles():
 
     /* Right Sidebar */
     .sidebar-section { 
-        background-color: rgba(255, 255, 255, 0.1); 
-        border: 1px solid rgba(255, 255, 255, 0.2); 
+        background-color: #ffffff; 
+        border: 1px solid #e2e8f0; 
         border-radius: 0.5rem; 
         padding: 1rem; 
         margin-bottom: 1rem; 
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar-section h3 { 
@@ -86,7 +89,7 @@ def get_styles():
         color: #1e293b; 
         margin: 0 0 1rem 0; 
         padding-bottom: 0.5rem; 
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+        border-bottom: 1px solid #e2e8f0; 
     }
 
     .level-section { 
@@ -117,11 +120,17 @@ def get_styles():
         padding: 0.5rem; 
         border-radius: 0.25rem; 
         margin-bottom: 0.25rem; 
-        background-color: rgba(255, 255, 255, 0.1); 
+        background-color: #f8fafc; 
+        border: 1px solid #e2e8f0;
     }
 
     .level-item:last-child { 
         margin-bottom: 0; 
+    }
+
+    .level-item:hover {
+        background-color: #f1f5f9;
+        border-color: #cbd5e1;
     }
 
     .level-price { 
@@ -160,14 +169,45 @@ def get_styles():
 
     .stCheckbox > label { color: #1e293b; }
     .stSelectbox > div > div { 
-        background-color: rgba(255, 255, 255, 0.1); 
-        border: 1px solid rgba(255, 255, 255, 0.2); 
+        background-color: #ffffff; 
+        border: 1px solid #e2e8f0; 
         color: #1e293b; 
     }
     .stNumberInput > div > div > input { 
-        background-color: rgba(255, 255, 255, 0.1); 
-        border: 1px solid rgba(255, 255, 255, 0.2); 
+        background-color: #ffffff; 
+        border: 1px solid #e2e8f0; 
         color: #1e293b; 
+    }
+
+    /* Dark Theme */
+    [data-theme="dark"] .info-card,
+    [data-theme="dark"] .sidebar-section,
+    [data-theme="dark"] .level-item,
+    [data-theme="dark"] .stSelectbox > div > div,
+    [data-theme="dark"] .stNumberInput > div > div > input {
+        background-color: #1e293b;
+        border-color: #334155;
+        color: #e2e8f0;
+    }
+
+    [data-theme="dark"] .info-label,
+    [data-theme="dark"] .level-strength {
+        color: #94a3b8;
+    }
+
+    [data-theme="dark"] .sidebar-section h3,
+    [data-theme="dark"] .stCheckbox > label {
+        color: #e2e8f0;
+    }
+
+    [data-theme="dark"] .level-item {
+        background-color: #1e293b;
+        border-color: #334155;
+    }
+
+    [data-theme="dark"] .level-item:hover {
+        background-color: #334155;
+        border-color: #475569;
     }
     </style>
     """ 
