@@ -293,11 +293,20 @@ def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_cro
             <div class="sidebar-section">
                 <h3>Support & Resistance Levels</h3>
                 <div class="level-section">
-                    <h4>Resistance Levels</h4>
-                    <ul class="level-list">
+
         """, unsafe_allow_html=True)
         
         # Display resistance levels above current price
+       
+        st.markdown("""
+                    </ul>
+                </div>
+                <div class="level-section">
+                    <h4>Resistance Levels</h4>
+                    <ul class="level-list">
+        """, unsafe_allow_html=True)
+       
+       
         for price, _, strength in resistance_levels:
             if strength == 11:  # Skip levels with strength 11
                 continue
