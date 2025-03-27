@@ -7,10 +7,8 @@ from src.indicators.technical import (
 from src.api.kucoin import fetch_market_info
 import time
 
-def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
-                    ichimoku_params, texts, language, theme, show_grid,
-                    show_crosshair, symbol, timeframe):
-    """Plot candlestick chart with selected indicators"""
+def plot_candlestick(df, indicators, texts, language, theme, show_grid, show_crosshair, 
+                   symbol, timeframe):
     # Display market info
     market_info = fetch_market_info(symbol)
     if market_info:
@@ -75,81 +73,121 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         ))
         
         # Add Moving Averages
-        if "MA" in indicators:
-            colors = ['#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#10b981']
-            for i, period in enumerate(ma_periods):
-                ma = calculate_ma(df, period)
-                fig.add_trace(go.Scatter(
-                    x=df['timestamp'],
-                    y=ma,
-                    name=f'MA{period}',
-                    line=dict(color=colors[i % len(colors)], width=2)
-                ))
+        for ma in indicators['MA']:
+            ma_data = df['close'].rolling(window=ma['period']).mean()
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'],
+                y=ma_data,
+                line=dict(color=ma['color'], width=1),
+                name=f"MA({ma['period']})"
+            ))
         
         # Add MACD
-        if "MACD" in indicators:
-            macd, signal, hist = calculate_macd(df, macd_params["fast"], macd_params["slow"], macd_params["signal"])
+        for macd_config in indicators['MACD']:
+            exp1 = df['close'].ewm(span=macd_config['fast'], adjust=False).mean()
+            exp2 = df['close'].ewm(span=macd_config['slow'], adjust=False).mean()
+            macd = exp1 - exp2
+            signal = macd.ewm(span=macd_config['signal'], adjust=False).mean()
+            histogram = macd - signal
+            
+            # Create new y-axis for MACD
             fig.add_trace(go.Scatter(
                 x=df['timestamp'],
                 y=macd,
-                name='MACD',
-                line=dict(color='#3b82f6', width=2),
+                name=f"MACD({macd_config['fast']},{macd_config['slow']},{macd_config['signal']})",
+                line=dict(color='#3b82f6', width=1),
                 yaxis='y2'
             ))
+            
             fig.add_trace(go.Scatter(
                 x=df['timestamp'],
                 y=signal,
                 name='Signal',
-                line=dict(color='#f59e0b', width=2),
+                line=dict(color='#f59e0b', width=1),
                 yaxis='y2'
             ))
+            
             fig.add_trace(go.Bar(
                 x=df['timestamp'],
-                y=hist,
+                y=histogram,
                 name='Histogram',
-                marker_color='#22c55e' if hist[-1] > 0 else '#ef4444',
+                marker=dict(
+                    color=['#22c55e' if val >= 0 else '#ef4444' for val in histogram],
+                    opacity=0.5
+                ),
                 yaxis='y2'
-            ))
-        
-        # Add Ichimoku Cloud
-        if "Ichimoku" in indicators:
-            tenkan, kijun, senkou_span_a, senkou_span_b = calculate_ichimoku(
-                df, ichimoku_params["tenkan"], ichimoku_params["kijun"], ichimoku_params["senkou"]
-            )
-            fig.add_trace(go.Scatter(
-                x=df['timestamp'],
-                y=tenkan,
-                name='Tenkan',
-                line=dict(color='#3b82f6', width=2)
-            ))
-            fig.add_trace(go.Scatter(
-                x=df['timestamp'],
-                y=kijun,
-                name='Kijun',
-                line=dict(color='#f59e0b', width=2)
-            ))
-            fig.add_trace(go.Scatter(
-                x=df['timestamp'],
-                y=senkou_span_a,
-                name='Senkou Span A',
-                line=dict(color='#22c55e', width=2)
-            ))
-            fig.add_trace(go.Scatter(
-                x=df['timestamp'],
-                y=senkou_span_b,
-                name='Senkou Span B',
-                line=dict(color='#ef4444', width=2)
             ))
         
         # Add RSI
-        if "RSI" in indicators:
-            rsi = calculate_rsi(df, rsi_period)
+        for rsi_config in indicators['RSI']:
+            delta = df['close'].diff()
+            gain = (delta.where(delta > 0, 0)).rolling(window=rsi_config['period']).mean()
+            loss = (-delta.where(delta < 0, 0)).rolling(window=rsi_config['period']).mean()
+            rs = gain / loss
+            rsi = 100 - (100 / (1 + rs))
+            
             fig.add_trace(go.Scatter(
                 x=df['timestamp'],
                 y=rsi,
-                name='RSI',
-                line=dict(color='#8b5cf6', width=2),
+                name=f"RSI({rsi_config['period']})",
+                line=dict(color=rsi_config['color'], width=1),
                 yaxis='y3'
+            ))
+        
+        # Add Ichimoku
+        for ichi_config in indicators['Ichimoku']:
+            # Conversion Line (Tenkan-sen)
+            high_9 = df['high'].rolling(window=ichi_config['tenkan']).max()
+            low_9 = df['low'].rolling(window=ichi_config['tenkan']).min()
+            tenkan_sen = (high_9 + low_9) / 2
+            
+            # Base Line (Kijun-sen)
+            high_26 = df['high'].rolling(window=ichi_config['kijun']).max()
+            low_26 = df['low'].rolling(window=ichi_config['kijun']).min()
+            kijun_sen = (high_26 + low_26) / 2
+            
+            # Leading Span A (Senkou Span A)
+            senkou_span_a = ((tenkan_sen + kijun_sen) / 2).shift(ichi_config['kijun'])
+            
+            # Leading Span B (Senkou Span B)
+            high_52 = df['high'].rolling(window=ichi_config['senkou']).max()
+            low_52 = df['low'].rolling(window=ichi_config['senkou']).min()
+            senkou_span_b = ((high_52 + low_52) / 2).shift(ichi_config['kijun'])
+            
+            # Lagging Span (Chikou Span)
+            chikou_span = df['close'].shift(-ichi_config['kijun'])
+            
+            # Add traces
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'], y=tenkan_sen,
+                name=f'Tenkan-sen ({ichi_config["tenkan"]})',
+                line=dict(color='#3b82f6', width=1)
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'], y=kijun_sen,
+                name=f'Kijun-sen ({ichi_config["kijun"]})',
+                line=dict(color='#ef4444', width=1)
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'], y=senkou_span_a,
+                name=f'Senkou Span A',
+                line=dict(color='#22c55e', width=1),
+                fill=None
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'], y=senkou_span_b,
+                name=f'Senkou Span B',
+                line=dict(color='#ef4444', width=1),
+                fill='tonexty'
+            ))
+            
+            fig.add_trace(go.Scatter(
+                x=df['timestamp'], y=chikou_span,
+                name=f'Chikou Span',
+                line=dict(color='#8b5cf6', width=1)
             ))
         
         # Add Support and Resistance Levels
@@ -164,6 +202,10 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         
         # Add support and resistance lines to chart
         for price, _, strength in support_levels:
+            # Skip levels with strength 11
+            if strength == 11:
+                continue
+                
             # Only show support lines below current price
             if price < current_price:
                 fig.add_hline(y=price, line_dash="dash", line_color="#22c55e", 
@@ -172,6 +214,10 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                              annotation_position="right")
         
         for price, _, strength in resistance_levels:
+            # Skip levels with strength 11
+            if strength == 11:
+                continue
+                
             # Only show resistance lines above current price
             if price > current_price:
                 fig.add_hline(y=price, line_dash="dash", line_color="#ef4444", 
@@ -179,61 +225,56 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
                              annotation_text=f"R: ${price:,.2f}", 
                              annotation_position="right")
         
-        # Update layout
-        fig.update_layout(
-            title=f"{symbol} - {timeframe}",
-            yaxis_title="Price",
-            xaxis_title="Time",
-            template="plotly_dark" if theme == texts["dark"] else "plotly_white",
-            showlegend=True,
-            legend=dict(
+        # Update layout for multiple y-axes
+        layout_updates = {
+            'yaxis': dict(
+                title='Price',
+                side='right',
+                showgrid=show_grid
+            ),
+            'xaxis': dict(
+                title='Time',
+                showgrid=show_grid
+            ),
+            'plot_bgcolor': 'rgba(0,0,0,0)',
+            'paper_bgcolor': 'rgba(0,0,0,0)',
+            'font': dict(color='#e2e8f0'),
+            'margin': dict(t=30, l=0, r=0, b=0),
+            'showlegend': True,
+            'legend': dict(
                 yanchor="top",
                 y=0.99,
                 xanchor="left",
-                x=0.01
-            ),
-            xaxis=dict(
-                rangeslider=dict(visible=False),
-                gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
-                showgrid=show_grid
-            ),
-            yaxis=dict(
-                gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
-                showgrid=show_grid
-            ),
-            hovermode='x unified' if show_crosshair else False,
-            height=600,
-            margin=dict(l=0, r=0, t=40, b=0),
-            paper_bgcolor="#0f172a" if theme == texts["dark"] else "#ffffff",
-            plot_bgcolor="#0f172a" if theme == texts["dark"] else "#ffffff",
-            font=dict(color="#e2e8f0" if theme == texts["dark"] else "#1e293b")
-        )
+                x=0.01,
+                bgcolor='rgba(0,0,0,0)'
+            )
+        }
         
-        # Add secondary y-axis for MACD and RSI
-        if "MACD" in indicators:
-            fig.update_layout(
-                yaxis2=dict(
-                    title="MACD",
-                    overlaying="y",
-                    side="right",
-                    position=0.95,
-                    gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
-                    showgrid=show_grid
-                )
+        # Add MACD subplot if exists
+        if indicators['MACD']:
+            layout_updates['yaxis2'] = dict(
+                title='MACD',
+                overlaying='y',
+                side='right',
+                showgrid=show_grid,
+                anchor='free',
+                position=1
             )
         
-        if "RSI" in indicators:
-            fig.update_layout(
-                yaxis3=dict(
-                    title="RSI",
-                    overlaying="y",
-                    side="right",
-                    position=0.85,
-                    gridcolor='rgba(128, 128, 128, 0.2)' if show_grid else 'rgba(0, 0, 0, 0)',
-                    showgrid=show_grid,
-                    range=[0, 100]
-                )
+        # Add RSI subplot if exists
+        if indicators['RSI']:
+            layout_updates['yaxis3'] = dict(
+                title='RSI',
+                overlaying='y',
+                side='right',
+                range=[0, 100],
+                showgrid=show_grid,
+                anchor='free',
+                position=0.95
             )
+        
+        # Update layout
+        fig.update_layout(**layout_updates)
         
         # Configure toolbar
         config = {
@@ -245,46 +286,51 @@ def plot_candlestick(df, indicators, ma_periods, macd_params, rsi_period,
         
         # Display chart
         st.plotly_chart(fig, use_container_width=True, config=config)
-    
+        
     # Display support and resistance levels in right sidebar
     with right_sidebar:
         st.markdown("""
-            <div class="right-sidebar">
-                <h3>Support & Resistance</h3>
-                <ul class="level-list">
+            <div class="sidebar-section">
+                <h3>Support & Resistance Levels</h3>
+                <div class="level-section">
+                    <h4>Resistance Levels</h4>
+                    <ul class="level-list">
         """, unsafe_allow_html=True)
-        st.markdown("""
-                </ul>
-                <h4>Resistance Levels</h4>
-                <ul class="level-list">
-        """, unsafe_allow_html=True)
+        
         # Display resistance levels above current price
         for price, _, strength in resistance_levels:
-            if price > current_price and strength != 11:
+            if strength == 11:  # Skip levels with strength 11
+                continue
+            if price > current_price:
                 st.markdown(f"""
-                    <li>
-                        <span class="resistance-level">${price:,.2f}</span>
-                        <span class="level-strength">{strength}</span>
+                    <li class="level-item">
+                        <span class="level-price resistance">${price:,.2f}</span>
+                        <span class="level-strength">Strength: {strength}</span>
                     </li>
                 """, unsafe_allow_html=True)
         
         st.markdown("""
-                </ul>
-                <h4>Support Levels</h4>
-                <ul class="level-list">
+                    </ul>
+                </div>
+                <div class="level-section">
+                    <h4>Support Levels</h4>
+                    <ul class="level-list">
         """, unsafe_allow_html=True)
         
         # Display support levels below current price
         for price, _, strength in support_levels:
-            if price < current_price and strength != 11:
+            if strength == 11:  # Skip levels with strength 11
+                continue
+            if price < current_price:
                 st.markdown(f"""
-                    <li>
-                        <span class="support-level">${price:,.2f}</span>
-                        <span class="level-strength">{strength}</span>
+                    <li class="level-item">
+                        <span class="level-price support">${price:,.2f}</span>
+                        <span class="level-strength">Strength: {strength}</span>
                     </li>
                 """, unsafe_allow_html=True)
         
         st.markdown("""
-                </ul>
+                    </ul>
+                </div>
             </div>
         """, unsafe_allow_html=True) 

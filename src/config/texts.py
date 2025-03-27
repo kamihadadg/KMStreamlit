@@ -48,7 +48,18 @@ texts = {
         "pan_right": "Pan Right →",
         "refresh_settings": "Refresh Settings",
         "auto_refresh": "Auto Refresh (1 min)",
-        "manual_refresh": "Manual Refresh"
+        "manual_refresh": "Manual Refresh",
+        "theme_label": "Theme",
+        "symbol_label": "Symbol",
+        "timeframe_label": "Timeframe",
+        "chart_settings_label": "Chart Settings",
+        "show_grid_label": "Show Grid",
+        "show_crosshair_label": "Show Crosshair",
+        "indicators_label": "Indicators",
+        "auto_refresh_label": "Auto Refresh",
+        "enable_auto_refresh_label": "Enable Auto Refresh",
+        "refresh_interval_label": "Refresh Interval (seconds)",
+        "refresh_interval_help": "Time between updates in seconds"
     },
     "Persian": {
         "title": "نمودار ارز دیجیتال",
@@ -99,7 +110,18 @@ texts = {
         "pan_right": "حرکت به راست →",
         "refresh_settings": "تنظیمات به‌روزرسانی",
         "auto_refresh": "به‌روزرسانی خودکار (۱ دقیقه)",
-        "manual_refresh": "به‌روزرسانی دستی"
+        "manual_refresh": "به‌روزرسانی دستی",
+        "theme_label": "تم",
+        "symbol_label": "نماد",
+        "timeframe_label": "تایم‌فریم",
+        "chart_settings_label": "تنظیمات نمودار",
+        "show_grid_label": "نمایش خطوط شبکه",
+        "show_crosshair_label": "نمایش نشانگر",
+        "indicators_label": "اندیکاتورها",
+        "auto_refresh_label": "به‌روزرسانی خودکار",
+        "enable_auto_refresh_label": "فعال‌سازی به‌روزرسانی خودکار",
+        "refresh_interval_label": "فاصله به‌روزرسانی (ثانیه)",
+        "refresh_interval_help": "فاصله زمانی بین به‌روزرسانی‌ها به ثانیه"
     },
     "German": {
         "title": "Krypto-Chart",
@@ -150,7 +172,18 @@ texts = {
         "pan_right": "Nach Rechts →",
         "refresh_settings": "Aktualisierungseinstellungen",
         "auto_refresh": "Automatische Aktualisierung (1 Min)",
-        "manual_refresh": "Manuelle Aktualisierung"
+        "manual_refresh": "Manuelle Aktualisierung",
+        "theme_label": "Theme",
+        "symbol_label": "Symbol",
+        "timeframe_label": "Zeitrahmen",
+        "chart_settings_label": "Chart-Einstellungen",
+        "show_grid_label": "Raster anzeigen",
+        "show_crosshair_label": "Fadenkreuz anzeigen",
+        "indicators_label": "Indikatoren",
+        "auto_refresh_label": "Automatische Aktualisierung",
+        "enable_auto_refresh_label": "Automatische Aktualisierung aktivieren",
+        "refresh_interval_label": "Aktualisierungsintervall (Sekunden)",
+        "refresh_interval_help": "Zeit zwischen Aktualisierungen in Sekunden"
     }
 }
 

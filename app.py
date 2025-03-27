@@ -5,6 +5,7 @@ from src.config.texts import get_texts
 from src.api.kucoin import fetch_candles
 from src.ui.chart import plot_candlestick
 import time
+import random
 
 # Page configuration
 setup_page_config()
@@ -25,6 +26,13 @@ if 'last_refresh' not in st.session_state:
     st.session_state.last_refresh = time.time()
 if 'auto_refresh' not in st.session_state:
     st.session_state.auto_refresh = True
+if 'indicators' not in st.session_state:
+    st.session_state.indicators = {
+        'MA': [],
+        'MACD': [],
+        'RSI': [],
+        'Ichimoku': []
+    }
 
 # Get texts based on language
 texts = get_texts(st.session_state.language)
@@ -108,54 +116,117 @@ with st.sidebar:
     if show_crosshair != st.session_state.show_crosshair:
         st.session_state.show_crosshair = show_crosshair
     
-    # Indicators with reduced spacing
-    st.caption(texts["indicators"])
-    indicators = []
+    # Indicators settings
+    st.sidebar.markdown(f"### {texts['indicators_label']}")
     
-    # Moving Averages
-    if st.checkbox(texts["ma"]):
-        indicators.append("MA")
-        st.caption(texts["ma_settings"])
-        ma_periods = {}
-        for i in range(1, 6):
-            default_value = 20 if i == 1 else 50 if i == 2 else 100 if i == 3 else 200 if i == 4 else 20
-            period = st.number_input(f"{texts['ma_period']} {i}", min_value=1, max_value=200, value=default_value)
-            if period > 0:
-                ma_periods[f"MA{period}"] = period
-    else:
-        ma_periods = {}
+    # Moving Average settings
+    st.sidebar.markdown("#### Moving Average")
+    ma_col1, ma_col2 = st.sidebar.columns([3, 1])
+    with ma_col1:
+        ma_period = st.number_input("Period", min_value=1, value=20, key="ma_period")
+    with ma_col2:
+        if st.button("Add MA"):
+            st.session_state.indicators['MA'].append({
+                'period': ma_period,
+                'color': '#' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)])
+            })
     
-    # MACD
-    if st.checkbox(texts["macd"]):
-        indicators.append("MACD")
-        st.caption(texts["macd_settings"])
-        macd_params = {
-            "fast": st.number_input(texts["macd_fast"], min_value=1, max_value=100, value=12),
-            "slow": st.number_input(texts["macd_slow"], min_value=1, max_value=100, value=26),
-            "signal": st.number_input(texts["macd_signal"], min_value=1, max_value=100, value=9)
-        }
-    else:
-        macd_params = {"fast": 12, "slow": 26, "signal": 9}
+    # Display active MAs
+    for i, ma in enumerate(st.session_state.indicators['MA']):
+        ma_col1, ma_col2 = st.sidebar.columns([3, 1])
+        with ma_col1:
+            st.markdown(f"MA({ma['period']})")
+        with ma_col2:
+            if st.button("Remove", key=f"remove_ma_{i}"):
+                st.session_state.indicators['MA'].pop(i)
+                st.experimental_rerun()
     
-    # RSI
-    if st.checkbox(texts["rsi"]):
-        indicators.append("RSI")
-        st.caption(texts["rsi_settings"])
-        rsi_period = st.number_input(texts["rsi_period"], min_value=1, max_value=100, value=14)
-    else:
-        rsi_period = 14
+    # MACD settings
+    st.sidebar.markdown("#### MACD")
+    macd_col1, macd_col2, macd_col3, macd_col4 = st.sidebar.columns([2, 2, 2, 1])
+    with macd_col1:
+        fast_period = st.number_input("Fast", min_value=1, value=12, key="macd_fast")
+    with macd_col2:
+        slow_period = st.number_input("Slow", min_value=1, value=26, key="macd_slow")
+    with macd_col3:
+        signal_period = st.number_input("Signal", min_value=1, value=9, key="macd_signal")
+    with macd_col4:
+        if st.button("Add MACD"):
+            st.session_state.indicators['MACD'].append({
+                'fast': fast_period,
+                'slow': slow_period,
+                'signal': signal_period
+            })
     
-    # Ichimoku
-    if st.checkbox(texts["ichimoku"]):
-        indicators.append("Ichimoku")
-        st.caption(texts["ichimoku_settings"])
-        ichimoku_params = {
-            "tenkan": st.number_input(texts["ichimoku_tenkan"], min_value=1, max_value=100, value=9),
-            "kijun": st.number_input(texts["ichimoku_kijun"], min_value=1, max_value=100, value=26),
-            "senkou": st.number_input(texts["ichimoku_senkou"], min_value=1, max_value=100, value=52)
-        }
-    else:
-        ichimoku_params = {"tenkan": 9, "kijun": 26, "senkou": 52}
+    # Display active MACDs
+    for i, macd in enumerate(st.session_state.indicators['MACD']):
+        macd_col1, macd_col2 = st.sidebar.columns([3, 1])
+        with macd_col1:
+            st.markdown(f"MACD({macd['fast']},{macd['slow']},{macd['signal']})")
+        with macd_col2:
+            if st.button("Remove", key=f"remove_macd_{i}"):
+                st.session_state.indicators['MACD'].pop(i)
+                st.experimental_rerun()
+    
+    # RSI settings
+    st.sidebar.markdown("#### RSI")
+    rsi_col1, rsi_col2 = st.sidebar.columns([3, 1])
+    with rsi_col1:
+        rsi_period = st.number_input("Period", min_value=1, value=14, key="rsi_period")
+    with rsi_col2:
+        if st.button("Add RSI"):
+            st.session_state.indicators['RSI'].append({
+                'period': rsi_period,
+                'color': '#' + ''.join([random.choice('0123456789ABCDEF') for _ in range(6)])
+            })
+    
+    # Display active RSIs
+    for i, rsi in enumerate(st.session_state.indicators['RSI']):
+        rsi_col1, rsi_col2 = st.sidebar.columns([3, 1])
+        with rsi_col1:
+            st.markdown(f"RSI({rsi['period']})")
+        with rsi_col2:
+            if st.button("Remove", key=f"remove_rsi_{i}"):
+                st.session_state.indicators['RSI'].pop(i)
+                st.experimental_rerun()
+    
+    # Ichimoku settings
+    st.sidebar.markdown("#### Ichimoku")
+    ichi_col1, ichi_col2, ichi_col3, ichi_col4 = st.sidebar.columns([2, 2, 2, 1])
+    with ichi_col1:
+        tenkan = st.number_input("Tenkan", min_value=1, value=9, key="ichi_tenkan")
+    with ichi_col2:
+        kijun = st.number_input("Kijun", min_value=1, value=26, key="ichi_kijun")
+    with ichi_col3:
+        senkou = st.number_input("Senkou", min_value=1, value=52, key="ichi_senkou")
+    with ichi_col4:
+        if st.button("Add Ichi"):
+            st.session_state.indicators['Ichimoku'].append({
+                'tenkan': tenkan,
+                'kijun': kijun,
+                'senkou': senkou
+            })
+    
+    # Display active Ichimoku
+    for i, ichi in enumerate(st.session_state.indicators['Ichimoku']):
+        ichi_col1, ichi_col2 = st.sidebar.columns([3, 1])
+        with ichi_col1:
+            st.markdown(f"Ichimoku({ichi['tenkan']},{ichi['kijun']},{ichi['senkou']})")
+        with ichi_col2:
+            if st.button("Remove", key=f"remove_ichi_{i}"):
+                st.session_state.indicators['Ichimoku'].pop(i)
+                st.experimental_rerun()
+    
+    # Auto-refresh settings
+    st.sidebar.markdown(f"### {texts['auto_refresh_label']}")
+    auto_refresh = st.sidebar.checkbox(texts["enable_auto_refresh_label"], value=False)
+    if auto_refresh:
+        refresh_interval = st.sidebar.number_input(
+            texts["refresh_interval_label"],
+            min_value=1,
+            value=5,
+            help=texts["refresh_interval_help"]
+        )
     
     # Timezone selection moved to the end
     st.caption(texts["timezone"])
@@ -163,22 +234,19 @@ with st.sidebar:
     if timezone != st.session_state.timezone:
         st.session_state.timezone = timezone
 
-# Main content
-# st.title(texts["title"])
-# st.markdown(texts["subtitle"])
-
 # Fetch and display data
 df = fetch_candles(selected_coin_label, selected_timeframe)
-if not df.empty:
-    # Convert MA periods to list of integers
-    ma_periods_list = [int(period) for period in ma_periods.values()]
-    
+if df is not None:
     plot_candlestick(
-        df, indicators, ma_periods_list, macd_params, rsi_period,
-        ichimoku_params, texts, st.session_state.language,
-        st.session_state.theme, st.session_state.show_grid,
-        st.session_state.show_crosshair, selected_coin_label,
-        selected_timeframe_label
+        df=df,
+        indicators=st.session_state.indicators,
+        texts=texts,
+        language=st.session_state.language,
+        theme=st.session_state.theme,
+        show_grid=st.session_state.show_grid,
+        show_crosshair=st.session_state.show_crosshair,
+        symbol=selected_coin_label,
+        timeframe=selected_timeframe_label
     )
 else:
     st.error(texts["error_no_data"])
