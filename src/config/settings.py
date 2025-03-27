@@ -31,8 +31,8 @@ def get_styles():
 
     /* Info Cards */
     .info-card { 
-        background-color: rgba(30, 41, 59, 0.5); 
-        border: 1px solid rgba(148, 163, 184, 0.1); 
+        background-color: rgba(255, 255, 255, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
         border-radius: 0.5rem; 
         padding: 0.75rem; 
         min-height: 65px; 
@@ -44,7 +44,7 @@ def get_styles():
     }
 
     .info-card:hover { 
-        border-color: rgba(148, 163, 184, 0.2); 
+        border-color: rgba(255, 255, 255, 0.3); 
         transform: translateY(-2px); 
     }
 
@@ -53,7 +53,7 @@ def get_styles():
         font-weight: 500; 
         text-transform: uppercase; 
         letter-spacing: 0.05em; 
-        color: #94a3b8; 
+        color: #64748b; 
         margin-bottom: 0.25rem; 
     }
 
@@ -73,8 +73,8 @@ def get_styles():
 
     /* Right Sidebar */
     .sidebar-section { 
-        background-color: rgba(30, 41, 59, 0.5); 
-        border: 1px solid rgba(148, 163, 184, 0.1); 
+        background-color: rgba(255, 255, 255, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
         border-radius: 0.5rem; 
         padding: 1rem; 
         margin-bottom: 1rem; 
@@ -83,10 +83,10 @@ def get_styles():
     .sidebar-section h3 { 
         font-size: 1rem; 
         font-weight: 600; 
-        color: #e2e8f0; 
+        color: #1e293b; 
         margin: 0 0 1rem 0; 
         padding-bottom: 0.5rem; 
-        border-bottom: 1px solid rgba(148, 163, 184, 0.1); 
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
     }
 
     .level-section { 
@@ -100,7 +100,7 @@ def get_styles():
     .level-section h4 { 
         font-size: 0.9rem; 
         font-weight: 500; 
-        color: #94a3b8; 
+        color: #64748b; 
         margin: 0 0 0.5rem 0; 
     }
 
@@ -117,7 +117,7 @@ def get_styles():
         padding: 0.5rem; 
         border-radius: 0.25rem; 
         margin-bottom: 0.25rem; 
-        background-color: rgba(30, 41, 59, 0.5); 
+        background-color: rgba(255, 255, 255, 0.1); 
     }
 
     .level-item:last-child { 
@@ -133,7 +133,7 @@ def get_styles():
     .level-price.support { color: #22c55e; }
     .level-strength { 
         font-size: 0.8rem; 
-        color: #94a3b8; 
+        color: #64748b; 
     }
 
     /* Buttons and Form Elements */
@@ -141,10 +141,16 @@ def get_styles():
         background-color: #3b82f6; 
         color: white; 
         border: none; 
-        padding: 0.5rem 1rem; 
+        padding: 0.5rem; 
         border-radius: 0.25rem; 
         font-weight: 500; 
         transition: all 0.2s ease-in-out; 
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
     }
 
     .stButton > button:hover { 
@@ -152,16 +158,16 @@ def get_styles():
         transform: translateY(-1px); 
     }
 
-    .stCheckbox > label { color: #e2e8f0; }
+    .stCheckbox > label { color: #1e293b; }
     .stSelectbox > div > div { 
-        background-color: rgba(30, 41, 59, 0.5); 
-        border: 1px solid rgba(148, 163, 184, 0.1); 
-        color: #e2e8f0; 
+        background-color: rgba(255, 255, 255, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        color: #1e293b; 
     }
     .stNumberInput > div > div > input { 
-        background-color: rgba(30, 41, 59, 0.5); 
-        border: 1px solid rgba(148, 163, 184, 0.1); 
-        color: #e2e8f0; 
+        background-color: rgba(255, 255, 255, 0.1); 
+        border: 1px solid rgba(255, 255, 255, 0.2); 
+        color: #1e293b; 
     }
     </style>
     """ 
